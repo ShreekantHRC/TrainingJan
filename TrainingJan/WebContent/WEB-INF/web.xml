@@ -9,6 +9,7 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
+    
   <servlet>
     <servlet-name>DataFetch</servlet-name>
     <servlet-class>training.movies.servlets.DataFetch</servlet-class>
