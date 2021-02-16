@@ -4,6 +4,21 @@ Ext.onReady(function() {
 	var windowHeight75 = (windowHeight25)*2.45;
 	var numberOfRecords= 10;
 	
+	Ext.override(Ext.Window, {
+	    closeAction: 'hide'
+	})
+	
+	var languages = Ext.create( 'Ext.data.Store',{
+		fields: ['value', 'text'],
+		data: [
+			{"value":"1", "text":'English'},
+			{"value":"2", "text":'Italian'},
+			{"value":"3", "text":'Japanese'},
+			{"value":"4", "text":'Mandarin'},
+			{"value":"5", "text":'German'}
+		],
+	});
+		
 	var track = Ext.create('Ext.data.Store', {
 	    fields: ['abbr', 'name'],
 	    data : [
@@ -99,170 +114,355 @@ Ext.onReady(function() {
 	});
 	
 	var addMovie = new Ext.Window(
-		    {
-			title:'Add new row',
+			{
+		    	title:'Edit Film Details',
 		        layout: {
 		        	type:'vbox',
-		        	align:'center'
+		        	align:'center',
+		        		pack:'middle',
 		        },
 		        width: 500,
-		        height: 400,
-		        closeAction: 'hide',
-		        items :[
-		        		{
+		        height: 625,
+		        items :[{
+        					xtype:'textfield',
+        					fieldLabel: 'New Title',
+        					name: 'last',
+        					width:400,
+        					value:'New Movie Title',
+        					id:'addTitle',
+        					allowBlank: false
+        				},{
 		        			xtype:'tbspacer',
 		        			height:20
 		        		},{
-		        			xtype:'textfield',
-		        			fieldLabel: 'First Name',
-		        			name: 'newfname',
-		        			//padding:'40,50,20,70',
-		        			allowBlank: false,
-		        			width:400,
-		        			//height:5
-		        		},{
-		        			xtype:'tbspacer',
-		        			height:20
-		        		},{
-		        			xtype:'textfield',
-		        			fieldLabel: 'Last Name',
-		        			name: 'newlname',
-		        			width:400,
-		        			//height:5,
-		        			allowBlank: false
+		        			xtype: 'numberfield',
+		        	        anchor: '100%',
+		        	        name: 'rYear',
+		        	        id:'addRelYear',
+		        	        fieldLabel: 'New Release year ',
+		        	        minValue: 1970,
+		        	        maxValue: 2021,
+		        	        width:400,
+		        	        value:2020,
+        					allowBlank: false,
+		        	        keyNavEnabled:true,
 		        		},{
 		        			xtype:'tbspacer',
 		        			height:20
 		        		},{
 		        			xtype: 'combo',
-				    	    fieldLabel: 'Department',
-				    	    hiddenName: 'age',
-				    	    //height: ,
+				    	    fieldLabel: 'New Language',
 				    	    width:400,
-				    	    id:'newCombo',
-				    	    //padding:'40,50,50,70',
+				    	    store:languages,
+				    	    id: 'addlangCombo',
+				    	    queryMode:'local',
+				    	    value:'English',
 				    	    allowBlank: false,
-				    	    store: new Ext.data.SimpleStore({
-				    	        	data: [
-				    	        		[1, 'Sales'],
-				    	        		[2, 'Hindi'],
-				    	        		[3, 'Spanish'],
-				    	        		[4, 'Italian'],
-				    	        		[5, 'French'],
-				    	        		[6, 'Russian'],
-				    	        		[7, 'Portugese'],
-				    	        		[8, 'Indonesian'],
-				    	        		],
-				    	        	id: 0,
-				    	        	fields: ['value', 'text']
-				    	    	})
-		        		},{
-		        			xtype:'tbspacer',
-		        			height:20
-		        		},{
-			            xtype: 'datefield',
-			            width:400,
-			            id:'newdate',
-			            pack  : 'center',
-		 	            fieldLabel: 'Hired Date'
-		        		},{
-		        			xtype:'button',
-		        			text:'Submit',
-		        			listeners: {
-		        				click: function() {
-		        					Ext.MessageBox.alert('Add a new row', 'New row has been added successfully!')
-		        					console.log(staticStore.add({
-		        							Title:'Yeh naya title',
-		        							Description:'yeh naya description',
-		        							ReleaseYear:'2020-01-01',
-		        							Language:'Yeh nayi bhaasha',
-		        							DirectorName:'Naya director',
-		        					}));
-		        					console.log("store ke baad");
-		        					console.log(Ext.getCmp('testGrid').getStore().load());
-		        					console.log("load ke baad");
-		        				}
-		        			}
-		        		}  
-		        		],
-		    });
-
-	var editMovie = new Ext.Window(
-		    {
-		    	title:'Advance Search',
-		        layout: {
-		        	type:'vbox',
-		        	align:'center'
-		        },
-		        width: 500,
-		        height: 400,
-		        //modal: true,
-		        closeAction: 'hide',
-		        items :[
-		        		{
-		        			xtype:'tbspacer',
-		        			height:20
-		        		},{
-		        			xtype:'textfield',
-		        			fieldLabel: 'First Name',
-		        			name: 'first',
-		        			//padding:'40,50,20,70',
-		        			allowBlank: false,
-		        			width:400,
-		        			//height:5
-		        		},{
-		        			xtype:'tbspacer',
-		        			height:20
-		        		},{
-		        			xtype:'textfield',
-		        			fieldLabel: 'Last Name',
-		        			name: 'last',
-		        			width:400,
-		        			//height:5,
-		        			allowBlank: false
+				    	    displayField: 'text',
+							valueField: 'value',
 		        		},{
 		        			xtype:'tbspacer',
 		        			height:20
 		        		},{
 		        			xtype: 'combo',
-				    	    fieldLabel: 'Department',
-				    	    hiddenName: 'age',
-				    	    //height: ,
+				    	    fieldLabel: 'New Rating',
 				    	    width:400,
-				    	    //padding:'40,50,50,70',
+				    	    id: 'addratingCombo',
+				    	    value:'PG',
 				    	    allowBlank: false,
 				    	    store: new Ext.data.SimpleStore({
 				    	    		data: [
-				    	    			[1, 'Sales'],
-				    	    			[2, 'Hindi'],
-				    	    			[3, 'Spanish'],
-				    	    			[4, 'Italian'],
-				    	    			[5, 'French'],
-				    	    			[6, 'Russian'],
-				    	    			[7, 'Portugese'],
-				    	    			[8, 'Indonesian'],
+				    	    			[1, 'G'],
+				    	    			[2, 'NC-17'],
+				    	    			[3, 'PG'],
+				    	    			[4, 'PG-13'],
+				    	    			[5, 'R'],
 				    	    			],
-				    	    		id: 0,
-				    	    		fields: ['value', 'text']
+				    	    		
+				    	    		fields: ['value', 'text'],
+				    	    		displayField: 'text',
+    								valueField: 'value',
 				    	    })
 		        		},{
 		        			xtype:'tbspacer',
 		        			height:20
 		        		},{
-		        			xtype: 'datefield',
-		        			width:400,
-		        			pack  : 'center',
-		        			fieldLabel: 'Hired Date'
+		        			xtype: 'combo',
+				    	    fieldLabel: 'New Special Features',
+				    	    width:400,
+				    	    value:'Trailers',
+				    	    id: 'addfeatureCombo',
+				    	    multiSelect:true,
+				    	    allowBlank: false,
+				    	    store: new Ext.data.SimpleStore({
+				    	    		data: [
+				    	    			[1, 'Trailers'],
+				    	    			[2, 'Commentaries'],
+				    	    			[3, 'Deleted Scenes'],
+				    	    			[4, 'Behind the scenes'],
+				    	    			],
+				    	    		
+				    	    		fields: ['value', 'text'],
+				    	    		displayField: 'text',
+    								valueField: 'value',
+				    	    })
 		        		},{
-		        			xtype:'button',
-		        			text:'Search',		        	
-		        			listeners: {
-		        				click: function() {
-		        					Ext.MessageBox.alert('', 'Coming Soon !');
-		        				}
-		        			}
-		        		}],
-		    })
+		        			xtype:'tbspacer',
+		        			height:20
+		        		},{
+        					xtype:'textarea',
+        					fieldLabel: 'New Description',
+        					name: 'last',
+        					id:'addDesc',
+        					value:'A Fantastic new movie',
+        					align:'center',
+        					pack:'middle',
+        					width:400,
+        					height:100,
+        					allowBlank: false
+        				},{
+		        			xtype:'tbspacer',
+		        			height:50
+		        		},{
+		        			layout: {
+		    		        	type:'hbox',
+		    		        	align:'center',
+		    		        	columnWidth:'0.5',	
+		    		        	flex:1,
+		    		        },
+		    				border:0,
+		    		        items:[
+			        			{
+				        			xtype:'button',
+				        			text:' Save ',	
+				        			width : 100,
+				        			listeners: {
+				        				click: function() {
+				        					var addTitle = Ext.getCmp('addTitle').getValue();
+				        					var addRelYear = Ext.getCmp('addRelYear').getValue();
+				        					var addDesc = Ext.getCmp('addDesc').getValue();
+				        					var addSpecialFeatures = Ext.getCmp('addfeatureCombo').getValue();
+				        					var addRating = Ext.getCmp('addratingCombo').getValue();
+				        					var addLang = Ext.getCmp('addlangCombo').getValue();
+				        					var choiceAddLang;
+				        					if(addLang=='English'){
+				        						choiceAddLang=1;
+				        					}else if(addLang=='Italian'){
+				        						choiceAddLang=2;
+				        					}else if(addLang=='Japanese'){
+				        						choiceAddLang=3;
+				        					}else if(addLang=='Mandarin'){
+				        						choiceAddLang=4;
+				        					}else if(addLang=='German'){
+				        						choiceAddLang=5;
+				        					}	
+				        					
+				        					Ext.Ajax.request({
+				        					    url: 'http://localhost:8080/TrainingJan/addMovie',
+				        					    method: 'POST',          
+				        					    params: {
+				        					    	uTitle:addTitle,
+				        					    	uDesc:addDesc,
+				        					    	uLang:choiceAddLang,
+				        					    	uSpec:addSpecialFeatures,
+				        					    },
+				        					    success: function(){console.log('Success');Ext.MessageBox.alert('Success ', 'Data Added Successfully !');},
+				        					    failure: function(){console.log('failure');Ext.MessageBox.alert('Failure ', 'Error Occured while adding !');}
+				        					});
+				        					
+				        					addMovie.close();
+				        				}
+				        			}
+				        		},{
+				        			xtype:'tbspacer',
+				        			width:50
+				        		},
+				        		{
+				        			xtype:'button',
+				        			text:' Cancel ',
+				        			width : 100,
+				        			listeners: {
+				        				click: function() {
+				        					addMovie.close();
+				        				}
+				        			}
+				        		},
+				        		],}
+		        		],
+		    });
+
+	var editMovie = new Ext.Window(
+		    {
+		    	title:'Edit Film Details',
+		        layout: {
+		        	type:'vbox',
+		        	align:'center',
+		        		pack:'middle',
+		        },
+		        width: 500,
+		        height: 625,
+		        items :[{
+        					xtype:'textfield',
+        					fieldLabel: 'New Title',
+        					name: 'last',
+        					width:400,
+        					id:'newTitle',
+        					allowBlank: false
+        				},{
+		        			xtype:'tbspacer',
+		        			height:20
+		        		},{
+		        			xtype: 'numberfield',
+		        	        anchor: '100%',
+		        	        name: 'rYear',
+		        	        id:'newRelYear',
+		        	        fieldLabel: 'New Release year ',
+		        	        minValue: 1970,
+		        	        maxValue: 2021,
+		        	        width:400,
+		        	        keyNavEnabled:true,
+		        		},{
+		        			xtype:'tbspacer',
+		        			height:20
+		        		},{
+		        			xtype: 'combo',
+				    	    fieldLabel: 'New Language',
+				    	    width:400,
+				    	    store:languages,
+				    	    id: 'langCombo',
+				    	    queryMode:'local',
+				    	    allowBlank: false,
+				    	    displayField: 'text',
+							valueField: 'value',
+		        		},{
+		        			xtype:'tbspacer',
+		        			height:20
+		        		},{
+		        			xtype: 'combo',
+				    	    fieldLabel: 'New Rating',
+				    	    width:400,
+				    	    id: 'ratingCombo',
+				    	    allowBlank: false,
+				    	    store: new Ext.data.SimpleStore({
+				    	    		data: [
+				    	    			[1, 'G'],
+				    	    			[2, 'NC-17'],
+				    	    			[3, 'PG'],
+				    	    			[4, 'PG-13'],
+				    	    			[5, 'R'],
+				    	    			],
+				    	    		
+				    	    		fields: ['value', 'text'],
+				    	    		displayField: 'text',
+    								valueField: 'value',
+				    	    })
+		        		},{
+		        			xtype:'tbspacer',
+		        			height:20
+		        		},{
+		        			xtype: 'combo',
+				    	    fieldLabel: 'New Special Features',
+				    	    width:400,
+				    	    id: 'featureCombo',
+				    	    multiSelect:true,
+				    	    allowBlank: false,
+				    	    store: new Ext.data.SimpleStore({
+				    	    		data: [
+				    	    			[1, 'Trailers'],
+				    	    			[2, 'Commentaries'],
+				    	    			[3, 'Deleted Scenes'],
+				    	    			[4, 'Behind the scenes'],
+				    	    			],
+				    	    		
+				    	    		fields: ['value', 'text'],
+				    	    		displayField: 'text',
+    								valueField: 'value',
+				    	    })
+		        		},{
+		        			xtype:'tbspacer',
+		        			height:20
+		        		},{
+        					xtype:'textarea',
+        					fieldLabel: 'New Description',
+        					name: 'last',
+        					id:'newDesc',
+        					align:'center',
+        					pack:'middle',
+        					width:400,
+        					height:100,
+        					allowBlank: false
+        				},{
+		        			xtype:'tbspacer',
+		        			height:50
+		        		},{
+		        			layout: {
+		    		        	type:'hbox',
+		    		        	align:'center',
+		    		        	columnWidth:'0.5',	
+		    		        	flex:1,
+		    		        },
+		    				border:0,
+		    		        items:[
+			        			{
+				        			xtype:'button',
+				        			text:' Save ',	
+				        			width : 100,
+				        			listeners: {
+				        				click: function() {
+				        					var userTitle = Ext.getCmp('newTitle').getValue();
+				        					var userRelYear = Ext.getCmp('newRelYear').getValue();
+				        					var userDesc = Ext.getCmp('newDesc').getValue();
+				        					var userSpecialFeatures = Ext.getCmp('featureCombo').getValue();
+				        					var userRating = Ext.getCmp('ratingCombo').getValue();
+				        					var userLang = Ext.getCmp('langCombo').getValue();
+				        					var choiceLang;
+				        					if(userLang=='English'){
+				        						choiceLang=1;
+				        					}else if(userLang=='Italian'){
+				        						choiceLang=2;
+				        					}else if(userLang=='Japanese'){
+				        						choiceLang=3;
+				        					}else if(userLang=='Mandarin'){
+				        						choiceLang=4;
+				        					}else if(userLang=='German'){
+				        						choiceLang=5;
+				        					}	
+				        					var userfilmId= Ext.getCmp('testGrid').getSelectionModel().getSelection()[0].data.filmId;
+				        					
+				        					Ext.Ajax.request({
+				        					    url: 'http://localhost:8080/TrainingJan/updateMovie',
+				        					    method: 'POST',          
+				        					    params: {
+				        					    	uTitle:userTitle,
+				        					    	uDesc:userDesc,
+				        					    	uLang:choiceLang,
+				        					    	uSpec:userSpecialFeatures,
+				        					    	uFilmId:userfilmId,
+				        					    },
+				        					    success: function(){console.log('Success');Ext.MessageBox.alert('Success ', 'Data Updated Successfully !');},
+				        					    failure: function(){console.log('failure');Ext.MessageBox.alert('Failure ', 'Error while saving !');}
+				        					});
+				        					
+				        					editMovie.close();
+				        				}
+				        			}
+				        		},{
+				        			xtype:'tbspacer',
+				        			width:50
+				        		},
+				        		{
+				        			xtype:'button',
+				        			text:' Cancel ',
+				        			width : 100,
+				        			listeners: {
+				        				click: function() {
+				        					editMovie.close();
+				        				}
+				        			}
+				        		},
+				        		],}
+		        		],
+		    });
 
 	var grid = Ext.create('Ext.grid.Panel', {
 		store: Ext.data.StoreManager.lookup('employeeStore'),
@@ -291,9 +491,17 @@ Ext.onReady(function() {
 				var select = Ext.getCmp('testGrid').getView().getSelectionModel().getSelection()[0];
 				console.log(Ext.getCmp('testGrid').getView().getSelectionModel().getSelection().length);
 				if(Ext.getCmp('testGrid').getView().getSelectionModel().getSelection().length == 1){
-					Ext.getCmp('editButton').enable();	
+					Ext.getCmp('deleteButton').enable();
+					Ext.getCmp('editButton').enable();
+					Ext.getCmp('newTitle').setValue(Ext.getCmp('testGrid').getView().getSelectionModel().getSelection()[0].data.title);
+					Ext.getCmp('newRelYear').setValue(Ext.getCmp('testGrid').getView().getSelectionModel().getSelection()[0].data.releaseYear);
+					Ext.getCmp('newDesc').setValue(Ext.getCmp('testGrid').getView().getSelectionModel().getSelection()[0].data.description);
+					Ext.getCmp('featureCombo').setValue(Ext.getCmp('testGrid').getView().getSelectionModel().getSelection()[0].data.specialFeature);
+					Ext.getCmp('ratingCombo').setValue(Ext.getCmp('testGrid').getView().getSelectionModel().getSelection()[0].data.rating);
+					Ext.getCmp('langCombo').setValue(Ext.getCmp('testGrid').getView().getSelectionModel().getSelection()[0].data.language);
 				}else{
 					Ext.getCmp('editButton').disable();
+					Ext.getCmp('deleteButton').disable();
 				}
 			}
 		},
@@ -348,13 +556,36 @@ Ext.onReady(function() {
 			},{
 			xtype:'button',
 			text:'Delete',
-			itemId:'deleteButton',
+			id:'deleteButton',
 			disabled:true,
 			tooltip:'Delete',
 			iconCls:'x-fa fa-trash',
 				listeners:{
 					click:function(){
-								console.log("Delete")
+						var userfilmId= Ext.getCmp('testGrid').getSelectionModel().getSelection()[0].data.filmId;
+						console.log(userfilmId);
+						var textResp = 'Are you sure you want to delete entry for - ' +Ext.getCmp('testGrid').getSelectionModel().getSelection()[0].data.title; 
+						Ext.Msg.show({title:'Delete', message:textResp,
+							buttons:Ext.Msg.YESNO,
+							icon:Ext.Msg.Question,
+							height:150,
+							width:200,
+							fn:function(btn){
+								if(btn=='yes'){
+									Ext.Ajax.request({
+		        					    url: 'http://localhost:8080/TrainingJan/deleteOneMovie',
+		        					    method: 'GET',          
+		        					    params: {
+		        					    	uFilmId:userfilmId,
+		        					    },
+		        					    success: function(){console.log('Success');Ext.MessageBox.alert('Success ', 'Data Deleted Successfully !');},
+		        					    failure: function(){console.log('failure');Ext.MessageBox.alert('Failure ', 'Error while deleting !');}
+		        					});
+		        					
+								}else{
+									console.log("Pressed No in delete");
+								}
+							}}).setSize(200);
 					}
 				}
 			}

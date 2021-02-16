@@ -13,32 +13,22 @@ import javax.servlet.http.HttpServletResponse;
 import training.movies.connection.DatabaseConnector;
 
 /**
- * Servlet implementation class UpdateSpcFilm
+ * Servlet implementation class AddMovie
  */
-
-class FilmSpecific{
-	String userDescription;
-	String userLanguage;
-	String userSpecialFeature;
-	String userFilmId;
-}
-
-public class UpdateSpcFilm extends HttpServlet {
+public class AddMovie extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         System.out.println(request.getContentType());
 		String userTitle = request.getParameter("uTitle");
 		String userDescription = request.getParameter("uDesc");
 		String userLanguage = request.getParameter("uLang");
 		String userSpecialFeature = request.getParameter("uSpec");
-		String userFilmId = request.getParameter("uFilmId");
-		System.out.println("Data recieved " + " film_id " + userFilmId  +" utitle " + userTitle + " userDescription "+ userDescription + " userLanguage " + userLanguage + " userSpecialFeature " + userSpecialFeature);
+		System.out.println("Data recieved " + " utitle " + userTitle + " userDescription "+ userDescription + " userLanguage " + userLanguage + " userSpecialFeature " + userSpecialFeature);
 		
 		DatabaseConnector databaseConnector=new DatabaseConnector();
         Connection  connection =null;
-        String sql = "Update film set title = ?, description = ?, language_id = ?, special_features = ? where film_id = ?";
+        String sql = "INSERT into film (title,description,language_id,special_features) values (?,?,?,?)";
         PreparedStatement statement = null;
         
         try {
@@ -51,7 +41,6 @@ public class UpdateSpcFilm extends HttpServlet {
 				statement.setString(2, userDescription);
 				statement.setString(3, userLanguage);
 				statement.setString(4, userSpecialFeature);
-				statement.setString(5, userFilmId);
 				
 				int status = statement.executeUpdate();
 				System.out.println(statement);
@@ -82,5 +71,5 @@ public class UpdateSpcFilm extends HttpServlet {
 			}
 		}
 	}
-
 }
+

@@ -9,7 +9,6 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
-    
   <servlet>
     <servlet-name>DataFetch</servlet-name>
     <servlet-class>training.movies.servlets.DataFetch</servlet-class>
@@ -25,5 +24,21 @@
   <servlet-mapping>
     <servlet-name>UpdateSpcFilm</servlet-name>
     <url-pattern>/updateMovie</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>AddMovie</servlet-name>
+    <servlet-class>training.movies.servlets.AddMovie</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AddMovie</servlet-name>
+    <url-pattern>/addMovie</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>DeleteMovie</servlet-name>
+    <servlet-class>training.movies.servlets.DeleteMovie</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DeleteMovie</servlet-name>
+    <url-pattern>/deleteOneMovie</url-pattern>
   </servlet-mapping>
 </web-app>

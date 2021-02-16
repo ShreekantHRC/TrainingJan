@@ -12,33 +12,17 @@ import javax.servlet.http.HttpServletResponse;
 
 import training.movies.connection.DatabaseConnector;
 
-/**
- * Servlet implementation class UpdateSpcFilm
- */
-
-class FilmSpecific{
-	String userDescription;
-	String userLanguage;
-	String userSpecialFeature;
-	String userFilmId;
-}
-
-public class UpdateSpcFilm extends HttpServlet {
+public class DeleteMovie extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println(request.getContentType());
-		String userTitle = request.getParameter("uTitle");
-		String userDescription = request.getParameter("uDesc");
-		String userLanguage = request.getParameter("uLang");
-		String userSpecialFeature = request.getParameter("uSpec");
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println(request.getContentType());
 		String userFilmId = request.getParameter("uFilmId");
-		System.out.println("Data recieved " + " film_id " + userFilmId  +" utitle " + userTitle + " userDescription "+ userDescription + " userLanguage " + userLanguage + " userSpecialFeature " + userSpecialFeature);
+		System.out.println("Data recieved " + " userFilmId "+ userFilmId );
 		
 		DatabaseConnector databaseConnector=new DatabaseConnector();
         Connection  connection =null;
-        String sql = "Update film set title = ?, description = ?, language_id = ?, special_features = ? where film_id = ?";
+        String sql = "Delete from film where film_id = ?";
         PreparedStatement statement = null;
         
         try {
@@ -47,11 +31,7 @@ public class UpdateSpcFilm extends HttpServlet {
         	connection.setAutoCommit(false);
 			statement = connection.prepareStatement(sql);
 			
-				statement.setString(1, userTitle);
-				statement.setString(2, userDescription);
-				statement.setString(3, userLanguage);
-				statement.setString(4, userSpecialFeature);
-				statement.setString(5, userFilmId);
+				statement.setString(1, userFilmId);
 				
 				int status = statement.executeUpdate();
 				System.out.println(statement);
@@ -82,5 +62,6 @@ public class UpdateSpcFilm extends HttpServlet {
 			}
 		}
 	}
+
 
 }
