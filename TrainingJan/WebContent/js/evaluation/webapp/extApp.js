@@ -287,7 +287,15 @@ Ext.onReady(function() {
 				type:'checkboxmodel'
 		},
 		listeners:{
-			
+			rowclick: function() {
+				var select = Ext.getCmp('testGrid').getView().getSelectionModel().getSelection()[0];
+				console.log(Ext.getCmp('testGrid').getView().getSelectionModel().getSelection().length);
+				if(Ext.getCmp('testGrid').getView().getSelectionModel().getSelection().length == 1){
+					Ext.getCmp('editButton').enable();	
+				}else{
+					Ext.getCmp('editButton').disable();
+				}
+			}
 		},
 		tbar:[{
 			xtype:'pagingtoolbar',
@@ -326,7 +334,7 @@ Ext.onReady(function() {
 				xtype:'button',
 			      text: 'Edit',
 			      tooltip: 'Edit',
-			      itemId:'editButton',
+			      id:'editButton',
 			      disabled:true,
 			      iconCls: 'x-fa fa-edit',
 			      listeners: {
