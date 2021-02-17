@@ -63,6 +63,87 @@ Ext.onReady(function() {
 		
 	});
 	
+	var editButton = Ext.create('Ext.button.Button',{
+		  text: 'Edit',
+	      tooltip: 'Edit',
+	      width:100,
+	      id:'editButton',
+	      disabled:true,
+	      iconCls: 'x-fa fa-edit',
+	      listeners: {
+	                click: function() {
+	                	editMovie.show()
+	          }
+	      }
+	})
+
+	var addButton=Ext.create('Ext.button.Button',{
+	      text: 'Add',
+	      itemId:'addButton',
+	      iconCls:'x-fa fa-plus',
+	      width:100,
+	      tooltip:'Add',
+	      listeners: {
+	    	  	click: function() {
+	    	  		addMovie.show();
+	    	  	}
+	      }
+	})
+	
+	var deleteButton=Ext.create('Ext.button.Button',{
+			text:'Delete',
+			width:100,
+			id:'deleteButton',
+			disabled:true,
+			tooltip:'Delete',
+			iconCls:'x-fa fa-trash',
+				listeners:{
+					click:function(){
+						var dataFields="";
+						var titleFields="";
+						if(Ext.getCmp('testGrid').getSelectionModel().getSelection().length>0){
+							var length=Ext.getCmp('testGrid').getSelectionModel().getSelection().length;
+							var gridData =Ext.getCmp('testGrid').getSelectionModel().getSelection();
+							for(i=0;i<length;i++){
+							    if(dataFields==""){
+							    dataFields=gridData[i].data.filmId;
+							    }else{
+							    dataFields=dataFields+","+gridData[i].data.filmId;
+							    } 
+							    if(titleFields==""){
+							    	titleFields=gridData[i].data.title;
+							    }else{
+							    	titleFields=titleFields+", "+gridData[i].data.title;
+							    }
+							}
+						}
+						console.log(dataFields);
+						console.log(titleFields);
+						var textResp = 'Are you sure you want to delete entry for - ' +titleFields; 
+						Ext.Msg.show({title:'Delete', message:textResp,
+							buttons:Ext.Msg.YESNO,
+							icon:Ext.Msg.Question,
+							fn:function(btn){
+								if(btn=='yes'){
+									Ext.Ajax.request({
+		        					    url: 'http://localhost:8080/TrainingJan/deleteOneMovie',
+		        					    method: 'GET',          
+		        					    params: {
+		        					    	uFilmId:dataFields,
+		        					    },
+		        					    success: function(){console.log('Success');Ext.MessageBox.alert('Success ', 'Data Deleted Successfully !');},
+		        					    failure: function(){console.log('failure');Ext.MessageBox.alert('Failure ', 'Error while deleting !');}
+		        					});
+									Ext.getCmp('testGrid').getStore().load();	
+									console.log("Loading again");
+								}else{
+									console.log("Pressed No in delete");
+								}
+							}}).setSize(500);
+					}
+				}
+	});
+	
 	var addMovie = new Ext.Window(
 			{
 		    	title:'Edit Film Details',
@@ -436,6 +517,9 @@ Ext.onReady(function() {
 					{text: 'Special Feature',  dataIndex:'specialFeature',cellWrap: true,flex: 15/100,sortable : false}
 				],
 		id:'testGrid',
+		width: windowWidth,
+		forceFit: true,
+		maxHeight : windowHeight75,
 		showHeaderCheckbox:false,
 		selModel:{
 				injectCheckbox:'first',
@@ -459,141 +543,52 @@ Ext.onReady(function() {
 				}else{
 					Ext.getCmp('editButton').disable();
 				}
-			},
-			onHeaderClick: function (headerCt, header, e) {
-		        if (header.isCheckerHd) {
-		            e.stopEvent();
-		            var isChecked = header.el.hasCls(Ext.baseCSSPrefix + 'grid-hd-checker-on');
-		            if (isChecked) {                
-		                this.deselectAll(true);
-		                //YOUR CODE ON UNCHECK 
-		                console.log('all unchecked');
-		            } else {                
-		                this.selectAll(true);
-		                //YOUR CODE ON CHECK
-		                console.log('all checked');
-		            }
-		        }
-		    },
-			click:function(){
-				console.log(Ext.getCmp('testGrid').getView().getSelectionModel().getSelection().length+" ne ");
-				Ext.getCmp('editButton').disable();
-				Ext.getCmp('deleteButton').disable();
 			}
 		},
-		tbar:[
-			{
-			xtype:'pagingtoolbar',
-			displayinfo: 'true',
-			border:0,
-			id:'paginationToolbar',
-			//width:'600',
-			//afterPageText:'of       '+Math.ceil( staticStore.proxy.data.length /  numberOfRecords),
-			store: staticStore,
-			
-		},{
-			xtype:'tbspacer',
-			width:25
-		},
-			{
-				xtype:'textfield',
-				emptyText: 'Search..',
-				width: 150,
-			},
-			{
-				xtype:'tbspacer',
-				width:25
-			},
-			{ xtype:'button',
-			      text: 'Add',
-			      itemId:'addButton',
-			      iconCls:'x-fa fa-plus',
-			      width:100,
-			      tooltip:'Add',
-			      width:75,
-			      listeners: {
-			    	  	click: function() {
-			    	  		addMovie.show();
-			    	  	}
-			      }
-			},
-			{
-				xtype:'tbspacer',
-				width:25
-			},{ 
-				xtype:'button',
-			      text: 'Edit',
-			      tooltip: 'Edit',
-			      width:100,
-			      id:'editButton',
-			      disabled:true,
-			      iconCls: 'x-fa fa-edit',
-			      listeners: {
-			                click: function() {
-			                	editMovie.show()
-			          }
-			      }
-			},{
-				xtype:'tbspacer',
-				width:25
-			},{
-			xtype:'button',
-			text:'Delete',
-			width:100,
-			id:'deleteButton',
-			disabled:true,
-			tooltip:'Delete',
-			iconCls:'x-fa fa-trash',
-				listeners:{
-					click:function(){
-						var dataFields="";
-						var titleFields="";
-						if(Ext.getCmp('testGrid').getSelectionModel().getSelection().length>0){
-							var length=Ext.getCmp('testGrid').getSelectionModel().getSelection().length;
-							var gridData =Ext.getCmp('testGrid').getSelectionModel().getSelection();
-							for(i=0;i<length;i++){
-							    if(dataFields==""){
-							    dataFields=gridData[i].data.filmId;
-							    }else{
-							    dataFields=dataFields+","+gridData[i].data.filmId;
-							    } 
-							    if(titleFields==""){
-							    	titleFields=gridData[i].data.title;
-							    }else{
-							    	titleFields=titleFields+", "+gridData[i].data.title;
-							    }
-							}
-						}
-						console.log(dataFields);
-						console.log(titleFields);
-						var textResp = 'Are you sure you want to delete entry for - ' +titleFields; 
-						Ext.Msg.show({title:'Delete', message:textResp,
-							buttons:Ext.Msg.YESNO,
-							icon:Ext.Msg.Question,
-							fn:function(btn){
-								if(btn=='yes'){
-									Ext.Ajax.request({
-		        					    url: 'http://localhost:8080/TrainingJan/deleteOneMovie',
-		        					    method: 'GET',          
-		        					    params: {
-		        					    	uFilmId:dataFields,
-		        					    },
-		        					    success: function(){console.log('Success');Ext.MessageBox.alert('Success ', 'Data Deleted Successfully !');},
-		        					    failure: function(){console.log('failure');Ext.MessageBox.alert('Failure ', 'Error while deleting !');}
-		        					});
-									Ext.getCmp('testGrid').getStore().load();	
-									console.log("Loading again");
-								}else{
-									console.log("Pressed No in delete");
-								}
-							}}).setSize(500);
-					}
-				}
-			}
-		],
-		width: windowWidth,
-		forceFit: true,
-		maxHeight : windowHeight75
+		dockedItems:[
+						{
+							xtype:'pagingtoolbar',
+							store: staticStore,
+							dock:'top',
+							inputItemWidth:'3em',
+							displayMsg:'Displaying {0} - {1} of {2}',
+							emptyMsg:'No records to display',
+							displayInfo: 'true',
+							border:0,
+							id:'paginationToolbar',
+							items:[{
+												xtype:'tbspacer',
+												width:12.5
+											},{xtype:'tbseparator'},{
+												xtype:'tbspacer',
+												width:12.5
+											},{
+												xtype:'textfield',
+												label:'Title Search ',
+												emptyText: 'Search..',
+												width: 150,
+											},{
+												xtype:'tbspacer',
+												width:12.5
+											},{xtype:'tbseparator'},
+											{
+												xtype:'tbspacer',
+												width:12.5
+											},addButton,{
+												xtype:'tbspacer',
+												width:12.5
+											},{xtype:'tbseparator'},{
+												xtype:'tbspacer',
+												width:12.5
+											},editButton,{
+												xtype:'tbspacer',
+												width:12.5
+											},{xtype:'tbseparator'},{
+												xtype:'tbspacer',
+												width:12.5
+											},deleteButton
+									]
+					}],		
 		});
 
 	var filterPanel = Ext.create('Ext.panel.Panel', {
