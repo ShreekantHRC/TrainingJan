@@ -16,6 +16,7 @@ public class DeleteMovie extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println("--------------Trace - DeleteMovie.doGet()--------------");
 		System.out.println(request.getContentType());
 		String userFilmId = request.getParameter("uFilmId");
 		System.out.println("Data recieved " + " userFilmId "+ userFilmId );

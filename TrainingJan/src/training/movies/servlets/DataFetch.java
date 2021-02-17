@@ -53,7 +53,7 @@ public class DataFetch extends HttpServlet {
 		else {
 			limit=300;
 		}
-		
+		System.out.println("--------------Trace - DataFetch.doGet("+ page + ")--------------");
 		if(page>0) {
 			page=page*limit;
 		}
@@ -64,9 +64,9 @@ public class DataFetch extends HttpServlet {
         Connection  connection =null;
         PrintWriter out = response.getWriter(); 
         String sql = "SELECT film.film_id as filmId, title, cat.name AS genre, description, release_year AS releaseYear, lang.name AS lang, rating, special_features AS specialFeatures FROM film\r\n" + 
-        		"INNER JOIN (SELECT `name`,language_id FROM `language`) AS lang ON film.language_id = lang.language_id \r\n" + 
-        		"INNER JOIN (SELECT film_id, category_id FROM film_category) AS fc ON film.film_id = fc.film_id\r\n" + 
-        		"INNER JOIN (SELECT category_id, `name` FROM category) AS cat ON fc.category_id=cat.category_id \r\n" + "Order by film.film_id " 
+        		"LEFT JOIN (SELECT `name`,language_id FROM `language`) AS lang ON film.language_id = lang.language_id \r\n" + 
+        		"LEFT JOIN (SELECT film_id, category_id FROM film_category) AS fc ON film.film_id = fc.film_id\r\n" + 
+        		"LEFT JOIN (SELECT category_id, `name` FROM category) AS cat ON fc.category_id=cat.category_id \r\n" + "Order by film.film_id " 
         		+ "limit "+start+", "+page;
         ResultSet rs = null;
         PreparedStatement statement = null;
@@ -149,6 +149,7 @@ public class DataFetch extends HttpServlet {
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
+				
 			}
 		}
 	}

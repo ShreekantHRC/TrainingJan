@@ -106,7 +106,7 @@ Ext.onReady(function() {
 				    	    store:languages,
 				    	    id: 'addlangCombo',
 				    	    queryMode:'local',
-				    	    value:'English',
+				    	    value:'English', 	
 				    	    allowBlank: false,
 				    	    displayField: 'text',
 							valueField: 'value',
@@ -151,7 +151,6 @@ Ext.onReady(function() {
 				    	    			[3, 'Deleted Scenes'],
 				    	    			[4, 'Behind the scenes'],
 				    	    			],
-				    	    		
 				    	    		fields: ['value', 'text'],
 				    	    		displayField: 'text',
     								valueField: 'value',
@@ -195,18 +194,20 @@ Ext.onReady(function() {
 				        					var addRating = Ext.getCmp('addratingCombo').getValue();
 				        					var addLang = Ext.getCmp('addlangCombo').getValue();
 				        					var choiceAddLang;
-				        					if(addLang=='English'){
+				        					if(addLang=='English' || addLang=='1'){
 				        						choiceAddLang=1;
-				        					}else if(addLang=='Italian'){
+				        					}else if(addLang=='Italian' || addLang=='2'){
 				        						choiceAddLang=2;
-				        					}else if(addLang=='Japanese'){
+				        					}else if(addLang=='Japanese' || addLang=='3'){
 				        						choiceAddLang=3;
-				        					}else if(addLang=='Mandarin'){
+				        					}else if(addLang=='Mandarin' || addLang=='4'){
 				        						choiceAddLang=4;
-				        					}else if(addLang=='German'){
+				        					}else if(addLang=='German' || addLang=='5'){
 				        						choiceAddLang=5;
-				        					}	
-				        					
+				        					}
+				        					console.log("language in add ", addLang);
+				        					addSpecialFeatures=addSpecialFeatures.join(",")
+				        					console.log(addSpecialFeatures);
 				        					Ext.Ajax.request({
 				        					    url: 'http://localhost:8080/TrainingJan/addMovie',
 				        					    method: 'POST',          
@@ -509,7 +510,10 @@ Ext.onReady(function() {
 			      width:75,
 			      listeners: {
 			    	  	click: function() {
-			    	  		addMovie.show()
+			    	  		addMovie.show();
+							console.log("Loading again");
+							console.log();
+							Ext.getCmp('testGrid').getStore().load();
 			    	  	}
 			      }
 			},

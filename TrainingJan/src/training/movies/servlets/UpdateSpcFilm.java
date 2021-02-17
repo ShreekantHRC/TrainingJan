@@ -28,6 +28,7 @@ public class UpdateSpcFilm extends HttpServlet {
 
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println("--------------Trace - UpdateSpcFilm.doPost()--------------");
         System.out.println(request.getContentType());
 		String userTitle = request.getParameter("uTitle");
 		String userDescription = request.getParameter("uDesc");

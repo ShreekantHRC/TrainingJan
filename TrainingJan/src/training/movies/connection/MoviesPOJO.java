@@ -23,7 +23,6 @@ public class MoviesPOJO {
 		}
 		else {
 			this.filmId = 0;
-			
 		}
 	}
 	public String getTitle() {
@@ -75,20 +74,32 @@ public class MoviesPOJO {
 		return genre;
 	}
 	public void setGenre(String genre) {
-		this.genre = genre;
+		if (genre != null) {
+			this.genre=genre;
+		}else {
+			this.genre="Genre data not available";
+		}
 	}
 	
 	public String getRating() {
 		return rating;
 	}
 	public void setRating(String rating) {
-		this.rating = rating;
+		if (rating != null) {
+			this.rating = rating;
+		}else {
+			this.rating = "Not rated";
+		}
 	}
 	public String getSpecialFeature() {
 		return specialFeature;
 	}
 	public void setSpecialFeature(String specialFeature) {
-		this.specialFeature = specialFeature;
+		if (specialFeature != null) {
+			this.specialFeature = specialFeature;
+		}else {
+			this.specialFeature = "No bonus content";
+		}
 	}
 	
     @Override
