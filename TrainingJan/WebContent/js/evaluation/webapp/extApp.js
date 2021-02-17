@@ -52,7 +52,7 @@ Ext.onReady(function() {
 		proxy: { 
 			type:'ajax',
 			url:'http://localhost:8080/TrainingJan/dataFetch',
-			enablePaging:true,
+			enablePaging:true, 
 //		    method: 'GET',          
 			reader:{
 				type:'json',

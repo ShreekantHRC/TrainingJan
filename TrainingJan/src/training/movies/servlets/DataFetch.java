@@ -62,15 +62,17 @@ public class DataFetch extends HttpServlet {
 		
 		DatabaseConnector databaseConnector=new DatabaseConnector();
         Connection  connection =null;
-        PrintWriter out = response.getWriter();
+        PrintWriter out = response.getWriter(); 
         String sql = "SELECT film.film_id as filmId, title, cat.name AS genre, description, release_year AS releaseYear, lang.name AS lang, rating, special_features AS specialFeatures FROM film\r\n" + 
         		"INNER JOIN (SELECT `name`,language_id FROM `language`) AS lang ON film.language_id = lang.language_id \r\n" + 
         		"INNER JOIN (SELECT film_id, category_id FROM film_category) AS fc ON film.film_id = fc.film_id\r\n" + 
-        		"INNER JOIN (SELECT category_id, `name` FROM category) AS cat ON fc.category_id=cat.category_id \r\n" + "Order by film_id " 
+        		"INNER JOIN (SELECT category_id, `name` FROM category) AS cat ON fc.category_id=cat.category_id \r\n" + "Order by film.film_id " 
         		+ "limit "+start+", "+page;
         ResultSet rs = null;
         PreparedStatement statement = null;
-        
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        JsonObject jsonObject = new JsonObject();
+        JsonArray jarray= new JsonArray();
         try {
 
         	connection=databaseConnector.connectdb();
@@ -96,25 +98,37 @@ public class DataFetch extends HttpServlet {
                 invoiceArray.add(pojoObj);
             }
             
-            Gson gson = new GsonBuilder().setPrettyPrinting().create();
-            JsonArray jarray = gson.toJsonTree(invoiceArray).getAsJsonArray();
-            JsonObject jsonObject = new JsonObject();
             
-            jsonObject.addProperty("total", 300);
+            jarray = gson.toJsonTree(invoiceArray).getAsJsonArray();
             jsonObject.add("movies", jarray);
             
             //String invoices= gson.toJson(invoiceArray);
-            response.setContentType("application/json");
-            response.setCharacterEncoding("UTF-8");
-            out.print(jsonObject.toString());
-            out.flush();
             System.out.println("Succesfully Loaded " + count);
-            
 		}
 		catch(Exception e) {
 			e.printStackTrace();
 		}
-		finally {
+        sql= "Select count(1) from film";
+        try {
+			connection=databaseConnector.connectdb();
+			statement = connection.prepareStatement(sql);
+			rs = statement.executeQuery();
+			int totalCount=0;
+			while(rs.next()) {
+				totalCount=rs.getInt(1);
+			}
+			jsonObject.addProperty("total", totalCount);
+			
+			response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            out.print(jsonObject.toString());
+            out.flush();
+		}
+		 catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+		}
+        finally {
 			if(connection !=null) {
 				try {
 					databaseConnector.disconnectdb(connection);
@@ -137,7 +151,5 @@ public class DataFetch extends HttpServlet {
 				}
 			}
 		}
-
-
 	}
 }
