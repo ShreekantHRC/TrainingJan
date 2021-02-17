@@ -36,15 +36,38 @@ public class DataFetch extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		Integer limitRows=300;
+		int page, start, limit;
+		if (request.getParameter("page") != null) {
+			page=Integer.parseInt(request.getParameter("page"));	
+		}else {
+			page=1;
+		}
+		if (request.getParameter("start") != null) {
+			start=Integer.parseInt(request.getParameter("start"));
+		}else {
+			start=0;
+		}
+		if (request.getParameter("limit") != null) {
+			limit = Integer.parseInt(request.getParameter("limit"));
+		}
+		else {
+			limit=300;
+		}
+		
+		if(page>0) {
+			page=page*limit;
+		}
+		
+		System.out.println("start "+ start +" limit "+ limit+ " page "+ page);
+		
 		DatabaseConnector databaseConnector=new DatabaseConnector();
         Connection  connection =null;
         PrintWriter out = response.getWriter();
         String sql = "SELECT film.film_id as filmId, title, cat.name AS genre, description, release_year AS releaseYear, lang.name AS lang, rating, special_features AS specialFeatures FROM film\r\n" + 
         		"INNER JOIN (SELECT `name`,language_id FROM `language`) AS lang ON film.language_id = lang.language_id \r\n" + 
         		"INNER JOIN (SELECT film_id, category_id FROM film_category) AS fc ON film.film_id = fc.film_id\r\n" + 
-        		"INNER JOIN (SELECT category_id, `name` FROM category) AS cat ON fc.category_id=cat.category_id \r\n" + 
-        		"ORDER BY RAND()";
+        		"INNER JOIN (SELECT category_id, `name` FROM category) AS cat ON fc.category_id=cat.category_id \r\n" + "Order by film_id " 
+        		+ "limit "+start+", "+page;
         ResultSet rs = null;
         PreparedStatement statement = null;
         
@@ -53,7 +76,6 @@ public class DataFetch extends HttpServlet {
         	connection=databaseConnector.connectdb();
 			statement = connection.prepareStatement(sql);
 			
-        	statement.setMaxRows(limitRows);
 			rs = statement.executeQuery();
 			
             ArrayList<MoviesPOJO> invoiceArray = new ArrayList<MoviesPOJO>();
@@ -78,7 +100,7 @@ public class DataFetch extends HttpServlet {
             JsonArray jarray = gson.toJsonTree(invoiceArray).getAsJsonArray();
             JsonObject jsonObject = new JsonObject();
             
-            jsonObject.addProperty("total", count.toString());
+            jsonObject.addProperty("total", 300);
             jsonObject.add("movies", jarray);
             
             //String invoices= gson.toJson(invoiceArray);
@@ -86,7 +108,6 @@ public class DataFetch extends HttpServlet {
             response.setCharacterEncoding("UTF-8");
             out.print(jsonObject.toString());
             out.flush();
-            System.out.println("Tried loading  " + limitRows);
             System.out.println("Succesfully Loaded " + count);
             
 		}

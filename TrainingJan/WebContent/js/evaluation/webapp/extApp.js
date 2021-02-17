@@ -53,6 +53,7 @@ Ext.onReady(function() {
 			type:'ajax',
 			url:'http://localhost:8080/TrainingJan/dataFetch',
 			enablePaging:true,
+//		    method: 'GET',          
 			reader:{
 				type:'json',
 				rootProperty:'movies',
