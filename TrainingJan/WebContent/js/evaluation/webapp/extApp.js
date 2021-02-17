@@ -59,58 +59,7 @@ Ext.onReady(function() {
 				totalProperty:'total'
 			}
 		},
-		/*data:[
-			{Title:"VANISHED GARDEN",Description:"A Intrepid Character Study of a Squirrel And a A Shark who must Kill a Lumberjack in California",ReleaseYear:"1978",Language:"HINDI",DirectorName:"Christopher Nolan"},
-			{Title:"GUNFIGHTER MUSSOLINI",Description:"A Touching Saga of a Robot And a Boy who must Kill a Man in Ancient Japan",ReleaseYear:"1979",Language:"SPANISH",DirectorName:"M Night Shyamalan"},
-			{Title:"MINORITY KISS",Description:"A Insightful Display of a Lumberjack And a Sumo Wrestler who must Meet a Man in The Outback",ReleaseYear:"1980",Language:"FRENCH",DirectorName:"Bradley Cooper"},
-			{Title:"GHOSTBUSTERS ELF",Description:"A Thoughtful Epistle of a Dog And a Feminist who must Chase a Composer in Berlin",ReleaseYear:"1981",Language:"KOREAN",DirectorName:"Christopher Nolan"},
-			{Title:"BEDAZZLED MARRIED",Description:"A Astounding Character Study of a Madman And a Robot who must Meet a Mad Scientist in An Abandoned Fun House",ReleaseYear:"1982",Language:"ENGLISH",DirectorName:"M Night Shyamalan"},
-			{Title:"FORREST SONS",Description:"A Thrilling Documentary of a Forensic Psychologist And a Butler who must Defeat a Explorer in A Jet Boat",ReleaseYear:"1983",Language:"HINDI",DirectorName:"Bradley Cooper"},
-			{Title:"STEPMOM DREAM",Description:"A Touching Epistle of a Crocodile And a Teacher who must Build a Forensic Psychologist in A MySQL Convention",ReleaseYear:"1984",Language:"ENGLISH",DirectorName:"Christopher Nolan"},
-			{Title:"LUCK OPUS",Description:"A Boring Display of a Moose And a Squirrel who must Outrace a Teacher in A Shark Tank",ReleaseYear:"1985",Language:"HINDI",DirectorName:"M Night Shyamalan"},
-			{Title:"SHIP WONDERLAND",Description:"A Thrilling Saga of a Monkey And a Frisbee who must Escape a Explorer in The Outback",ReleaseYear:"1986",Language:"SPANISH",DirectorName:"Bradley Cooper"},
-			{Title:"BALLOON HOMEWARD",Description:"A Insightful Panorama of a Forensic Psychologist And a Mad Cow who must Build a Mad Scientist in The First Manned Space Station",ReleaseYear:"1987",Language:"FRENCH",DirectorName:"Christopher Nolan"},
-			{Title:"SEA VIRGIN",Description:"A Fast-Paced Documentary of a Technical Writer And a Pastry Chef who must Escape a Moose in A U-Boat",ReleaseYear:"1988",Language:"KOREAN",DirectorName:"M Night Shyamalan"},
-			{Title:"EFFECT GLADIATOR",Description:"A Beautiful Display of a Pastry Chef And a Pastry Chef who must Outgun a Forensic Psychologist in A Manhattan Penthouse",ReleaseYear:"1989",Language:"ENGLISH",DirectorName:"Bradley Cooper"},
-			{Title:"WIFE TURN",Description:"A Awe-Inspiring Epistle of a Teacher And a Feminist who must Confront a Pioneer in Ancient Japan",ReleaseYear:"1990",Language:"HINDI",DirectorName:"Christopher Nolan"},
-			{Title:"GANGS PRIDE",Description:"A Taut Character Study of a Woman And a A Shark who must Confront a Frisbee in Berlin",ReleaseYear:"1991",Language:"SPANISH",DirectorName:"M Night Shyamalan"},
-			{Title:"LEGALLY SECRETARY",Description:"A Astounding Tale of a A Shark And a Moose who must Meet a Womanizer in The Sahara Desert",ReleaseYear:"1992",Language:"FRENCH",DirectorName:"Bradley Cooper"},
-			{Title:"KRAMER CHOCOLATE",Description:"A Amazing Yarn of a Robot And a Pastry Chef who must Redeem a Mad Scientist in The Outback",ReleaseYear:"1993",Language:"KOREAN",DirectorName:"Christopher Nolan"},
-			{Title:"BREAKING HOME",Description:"A Beautiful Display of a Secret Agent And a Monkey who must Battle a Sumo Wrestler in An Abandoned Mine Shaft",ReleaseYear:"1994",Language:"ENGLISH",DirectorName:"M Night Shyamalan"},
-			{Title:"RAINBOW SHOCK",Description:"A Action-Packed Story of a Hunter And a Boy who must Discover a Lumberjack in Ancient India",ReleaseYear:"1995",Language:"HINDI",DirectorName:"Bradley Cooper"},
-			{Title:"MUSSOLINI SPOILERS",Description:"A Thrilling Display of a Boat And a Monkey who must Meet a Composer in Ancient China",ReleaseYear:"1996",Language:"SPANISH",DirectorName:"Christopher Nolan"},
-			{Title:"CONVERSATION DOWNHILL",Description:"A Taut Character Study of a Husband And a Waitress who must Sink a Squirrel in A MySQL Convention",ReleaseYear:"1997",Language:"FRENCH",DirectorName:"M Night Shyamalan"},
-			{Title:"ANONYMOUS HUMAN",Description:"A Amazing Reflection of a Database Administrator And a Astronaut who must Outrace a Database Administrator in A Shark Tank",ReleaseYear:"1998",Language:"KOREAN",DirectorName:"Bradley Cooper"},
-			{Title:"MOULIN WAKE",Description:"A Astounding Story of a Forensic Psychologist And a Cat who must Battle a Teacher in An Abandoned Mine Shaft",ReleaseYear:"1999",Language:"ENGLISH",DirectorName:"Christopher Nolan"},
-			{Title:"DESTINY SATURDAY",Description:"A Touching Drama of a Crocodile And a Crocodile who must Conquer a Explorer in Soviet Georgia",ReleaseYear:"2000",Language:"HINDI",DirectorName:"M Night Shyamalan"},
-			{Title:"STOCK GLASS",Description:"A Boring Epistle of a Crocodile And a Lumberjack who must Outgun a Moose in Ancient China",ReleaseYear:"2001",Language:"SPANISH",DirectorName:"Bradley Cooper"},
-			{Title:"GLASS DYING",Description:"A Astounding Drama of a Frisbee And a Astronaut who must Fight a Dog in Ancient Japan",ReleaseYear:"2002",Language:"FRENCH",DirectorName:"Christopher Nolan"},
-			{Title:"SORORITY QUEEN",Description:"A Fast-Paced Display of a Squirrel And a Composer who must Fight a Forensic Psychologist in A Jet Boat",ReleaseYear:"2003",Language:"KOREAN",DirectorName:"M Night Shyamalan"},
-			{Title:"DREAM PICKUP",Description:"A Epic Display of a Car And a Composer who must Overcome a Forensic Psychologist in The Gulf of Mexico",ReleaseYear:"2004",Language:"ENGLISH",DirectorName:"Bradley Cooper"},
-			{Title:"LUST LOCK",Description:"A Fanciful Panorama of a Hunter And a Dentist who must Meet a Secret Agent in The Sahara Desert",ReleaseYear:"2005",Language:"HINDI",DirectorName:"Christopher Nolan"},
-			{Title:"HYSTERICAL GRAIL",Description:"A Amazing Saga of a Madman And a Dentist who must Build a Car in A Manhattan Penthouse",ReleaseYear:"2006",Language:"ENGLISH",DirectorName:"M Night Shyamalan"},
-			{Title:"MAGIC MALLRATS",Description:"A Touching Documentary of a Pastry Chef And a Pastry Chef who must Build a Mad Scientist in California",ReleaseYear:"2006",Language:"HINDI",DirectorName:"Bradley Cooper"},
-			{Title:"ENCINO ELF",Description:"A Astounding Drama of a Feminist And a Teacher who must Confront a Husband in A Baloon",ReleaseYear:"2006",Language:"SPANISH",DirectorName:"Christopher Nolan"},
-			{Title:"GORGEOUS BINGO",Description:"A Action-Packed Display of a Sumo Wrestler And a Car who must Overcome a Waitress in A Baloon Factory",ReleaseYear:"2006",Language:"FRENCH",DirectorName:"M Night Shyamalan"},
-			{Title:"DROP WATERFRONT",Description:"A Fanciful Documentary of a Husband And a Explorer who must Reach a Madman in Ancient China",ReleaseYear:"2006",Language:"KOREAN",DirectorName:"Bradley Cooper"},
-			{Title:"COMMANDMENTS EXPRESS",Description:"A Fanciful Saga of a Student And a Mad Scientist who must Battle a Hunter in An Abandoned Mine Shaft",ReleaseYear:"2006",Language:"ENGLISH",DirectorName:"Christopher Nolan"},
-			{Title:"NEIGHBORS CHARADE",Description:"A Fanciful Reflection of a Crocodile And a Astronaut who must Outrace a Feminist in An Abandoned Amusement Park",ReleaseYear:"2006",Language:"HINDI",DirectorName:"M Night Shyamalan"},
-			{Title:"METAL ARMAGEDDON",Description:"A Thrilling Display of a Lumberjack And a Crocodile who must Meet a Monkey in A Baloon Factory",ReleaseYear:"2006",Language:"SPANISH",DirectorName:"Bradley Cooper"},
-			{Title:"ANNIE IDENTITY",Description:"A Amazing Panorama of a Pastry Chef And a Boat who must Escape a Woman in An Abandoned Amusement Park",ReleaseYear:"2006",Language:"FRENCH",DirectorName:"Christopher Nolan"},
-			{Title:"BORN SPINAL",Description:"A Touching Epistle of a Frisbee And a Husband who must Pursue a Student in Nigeria",ReleaseYear:"2006",Language:"KOREAN",DirectorName:"M Night Shyamalan"},
-			{Title:"BEHAVIOR RUNAWAY",Description:"A Unbelieveable Drama of a Student And a Husband who must Outrace a Sumo Wrestler in Berlin",ReleaseYear:"2006",Language:"ENGLISH",DirectorName:"Bradley Cooper"},
-			{Title:"MATRIX SNOWMAN",Description:"A Action-Packed Saga of a Womanizer And a Woman who must Overcome a Student in California",ReleaseYear:"2006",Language:"HINDI",DirectorName:"Christopher Nolan"},
-			{Title:"TEXAS WATCH",Description:"A Awe-Inspiring Yarn of a Student And a Teacher who must Fight a Teacher in An Abandoned Amusement Park",ReleaseYear:"2006",Language:"SPANISH",DirectorName:"M Night Shyamalan"},
-			{Title:"APOLLO TEEN",Description:"A Action-Packed Reflection of a Crocodile And a Explorer who must Find a Sumo Wrestler in An Abandoned Mine Shaft",ReleaseYear:"2006",Language:"FRENCH",DirectorName:"Bradley Cooper"},
-			{Title:"JERK PAYCHECK",Description:"A Touching Character Study of a Pastry Chef And a Database Administrator who must Reach a A Shark in Ancient Japan",ReleaseYear:"2006",Language:"KOREAN",DirectorName:"Christopher Nolan"},
-			{Title:"AFFAIR PREJUDICE",Description:"A Fanciful Documentary of a Frisbee And a Lumberjack who must Chase a Monkey in A Shark Tank",ReleaseYear:"2006",Language:"ENGLISH",DirectorName:"M Night Shyamalan"},
-			{Title:"PHILADELPHIA WIFE",Description:"A Taut Yarn of a Hunter And a Astronaut who must Conquer a Database Administrator in The Sahara Desert",ReleaseYear:"2006",Language:"HINDI",DirectorName:"Bradley Cooper"},
-			{Title:"OPEN AFRICAN",Description:"A Lacklusture Drama of a Secret Agent And a Explorer who must Discover a Car in A U-Boat",ReleaseYear:"2006",Language:"SPANISH",DirectorName:"Christopher Nolan"},
-			{Title:"FISH OPUS",Description:"A Touching Display of a Feminist And a Girl who must Confront a Astronaut in Australia",ReleaseYear:"2006",Language:"FRENCH",DirectorName:"M Night Shyamalan"},
-			{Title:"COMA HEAD",Description:"A Awe-Inspiring Drama of a Boy And a Frisbee who must Escape a Pastry Chef in California",ReleaseYear:"2006",Language:"KOREAN",DirectorName:"Bradley Cooper"},
-			{Title:"POCUS PULP",Description:"A Intrepid Yarn of a Frisbee And a Dog who must Build a Astronaut in A Baloon Factory",ReleaseYear:"2006",Language:"ENGLISH",DirectorName:"Christopher Nolan"},
-			{Title:"TADPOLE PARK",Description:"A Beautiful Tale of a Frisbee And a Moose who must Vanquish a Dog in An Abandoned Amusement Park",ReleaseYear:"2006",Language:"HINDI",DirectorName:"M Night Shyamalan"},				
-			]*/
+		
 	});
 	
 	var addMovie = new Ext.Window(
@@ -469,20 +418,22 @@ Ext.onReady(function() {
 		plugins: 'gridfilters',
 		//bodyPadding: 10,
 		title:'Movie Grid',
+		
+		toggleOnClick:true,
 		columns: [
-					 //{text: 'FilmId',  dataIndex:'filmId', editor:'textfield',cellWrap: true,flex: 20/100, sortable : true},
-					{text: 'Title',  dataIndex:'title', editor:'textfield',cellWrap: true,flex: 20/100,sortable : false},
-					{text: 'Genre',  dataIndex:'genre',cellWrap: true,flex: 15/100,sortable : false},
+					{text: 'Title',  dataIndex:'title', editor:'textfield',cellWrap: true,flex: 20/100,sortable : true},
+					{text: 'Genre',  dataIndex:'genre',cellWrap: true,flex: 15/100,sortable : true},
 					{text: 'Description',  dataIndex:'description', editor:'textfield',cellWrap: true,flex: 35/100,sortable : false},
 					{text: 'Release Year',  dataIndex:'releaseYear', editor:'textfield',flex: 10/100,sortable : true},
-					{text: 'Language',  dataIndex:'language', editor:'textfield',flex: 15/100,sortable : false},
-					{text: 'Rating',  dataIndex:'rating',cellWrap: true,flex: 5/100,sortable : false},
+					{text: 'Language',  dataIndex:'language', editor:'textfield',flex: 15/100,sortable : true},
+					{text: 'Rating',  dataIndex:'rating',cellWrap: true,flex: 5/100,sortable : true},
 					{text: 'Special Feature',  dataIndex:'specialFeature',cellWrap: true,flex: 15/100,sortable : false}
 				],
 		id:'testGrid',
+		showHeaderCheckbox:false,
 		selModel:{
 				injectCheckbox:'first',
-				checkOnly:true,
+				//checkOnly:true,
 				model:'SIMPLE',
 				type:'checkboxmodel'
 		},
@@ -503,13 +454,38 @@ Ext.onReady(function() {
 					Ext.getCmp('editButton').disable();
 					Ext.getCmp('deleteButton').disable();
 				}
+			},
+			onHeaderClick: function (headerCt, header, e) {
+		        if (header.isCheckerHd) {
+		            e.stopEvent();
+		            var isChecked = header.el.hasCls(Ext.baseCSSPrefix + 'grid-hd-checker-on');
+		            if (isChecked) {                
+		                this.deselectAll(true);
+		                //YOUR CODE ON UNCHECK 
+		                console.log('all unchecked');
+		            } else {                
+		                this.selectAll(true);
+		                //YOUR CODE ON CHECK
+		                console.log('all checked');
+		            }
+		        }
+		    },
+			click:function(){
+				console.log(Ext.getCmp('testGrid').getView().getSelectionModel().getSelection().length+" ne ");
+				Ext.getCmp('editButton').disable();
+				Ext.getCmp('deleteButton').disable();
 			}
 		},
-		tbar:[{
+		tbar:[
+			{
 			xtype:'pagingtoolbar',
 			displayinfo: 'true',
-			//afterPageText:'of  '+Math.ceil( staticStore.proxy.data.length /  numberOfRecords),
+			border:0,
+			id:'paginationToolbar',
+			//width:'600',
+			//afterPageText:'of       '+Math.ceil( staticStore.proxy.data.length /  numberOfRecords),
 			store: staticStore,
+			
 		},{
 			xtype:'tbspacer',
 			width:25
@@ -527,6 +503,7 @@ Ext.onReady(function() {
 			      text: 'Add',
 			      itemId:'addButton',
 			      iconCls:'x-fa fa-plus',
+			      width:100,
 			      tooltip:'Add',
 			      width:75,
 			      listeners: {
@@ -542,6 +519,7 @@ Ext.onReady(function() {
 				xtype:'button',
 			      text: 'Edit',
 			      tooltip: 'Edit',
+			      width:100,
 			      id:'editButton',
 			      disabled:true,
 			      iconCls: 'x-fa fa-edit',
@@ -556,6 +534,7 @@ Ext.onReady(function() {
 			},{
 			xtype:'button',
 			text:'Delete',
+			width:100,
 			id:'deleteButton',
 			disabled:true,
 			tooltip:'Delete',
