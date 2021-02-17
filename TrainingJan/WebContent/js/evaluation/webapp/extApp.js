@@ -220,7 +220,9 @@ Ext.onReady(function() {
 				        					    success: function(){console.log('Success');Ext.MessageBox.alert('Success ', 'Data Added Successfully !');},
 				        					    failure: function(){console.log('failure');Ext.MessageBox.alert('Failure ', 'Error Occured while adding !');}
 				        					});
-				        					
+
+											Ext.getCmp('testGrid').getStore().load();	
+											console.log("Loading again");
 				        					addMovie.close();
 				        				}
 				        			}
@@ -393,7 +395,9 @@ Ext.onReady(function() {
 				        					    success: function(){console.log('Success');Ext.MessageBox.alert('Success ', 'Data Updated Successfully !');},
 				        					    failure: function(){console.log('failure');Ext.MessageBox.alert('Failure ', 'Error while saving !');}
 				        					});
-				        					
+
+											Ext.getCmp('testGrid').getStore().load();	
+											console.log("Loading again");
 				        					editMovie.close();
 				        				}
 				        			}
@@ -454,7 +458,6 @@ Ext.onReady(function() {
 					Ext.getCmp('langCombo').setValue(Ext.getCmp('testGrid').getView().getSelectionModel().getSelection()[0].data.language);
 				}else{
 					Ext.getCmp('editButton').disable();
-					Ext.getCmp('deleteButton').disable();
 				}
 			},
 			onHeaderClick: function (headerCt, header, e) {
@@ -511,9 +514,6 @@ Ext.onReady(function() {
 			      listeners: {
 			    	  	click: function() {
 			    	  		addMovie.show();
-							console.log("Loading again");
-							console.log();
-							Ext.getCmp('testGrid').getStore().load();
 			    	  	}
 			      }
 			},
@@ -546,30 +546,47 @@ Ext.onReady(function() {
 			iconCls:'x-fa fa-trash',
 				listeners:{
 					click:function(){
-						var userfilmId= Ext.getCmp('testGrid').getSelectionModel().getSelection()[0].data.filmId;
-						console.log(userfilmId);
-						var textResp = 'Are you sure you want to delete entry for - ' +Ext.getCmp('testGrid').getSelectionModel().getSelection()[0].data.title; 
+						var dataFields="";
+						var titleFields="";
+						if(Ext.getCmp('testGrid').getSelectionModel().getSelection().length>0){
+							var length=Ext.getCmp('testGrid').getSelectionModel().getSelection().length;
+							var gridData =Ext.getCmp('testGrid').getSelectionModel().getSelection();
+							for(i=0;i<length;i++){
+							    if(dataFields==""){
+							    dataFields=gridData[i].data.filmId;
+							    }else{
+							    dataFields=dataFields+","+gridData[i].data.filmId;
+							    } 
+							    if(titleFields==""){
+							    	titleFields=gridData[i].data.title;
+							    }else{
+							    	titleFields=titleFields+", "+gridData[i].data.title;
+							    }
+							}
+						}
+						console.log(dataFields);
+						console.log(titleFields);
+						var textResp = 'Are you sure you want to delete entry for - ' +titleFields; 
 						Ext.Msg.show({title:'Delete', message:textResp,
 							buttons:Ext.Msg.YESNO,
 							icon:Ext.Msg.Question,
-							height:150,
-							width:200,
 							fn:function(btn){
 								if(btn=='yes'){
 									Ext.Ajax.request({
 		        					    url: 'http://localhost:8080/TrainingJan/deleteOneMovie',
 		        					    method: 'GET',          
 		        					    params: {
-		        					    	uFilmId:userfilmId,
+		        					    	uFilmId:dataFields,
 		        					    },
 		        					    success: function(){console.log('Success');Ext.MessageBox.alert('Success ', 'Data Deleted Successfully !');},
 		        					    failure: function(){console.log('failure');Ext.MessageBox.alert('Failure ', 'Error while deleting !');}
 		        					});
-		        					
+									Ext.getCmp('testGrid').getStore().load();	
+									console.log("Loading again");
 								}else{
 									console.log("Pressed No in delete");
 								}
-							}}).setSize(200);
+							}}).setSize(500);
 					}
 				}
 			}

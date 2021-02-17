@@ -20,10 +20,9 @@ public class DeleteMovie extends HttpServlet {
 		System.out.println(request.getContentType());
 		String userFilmId = request.getParameter("uFilmId");
 		System.out.println("Data recieved " + " userFilmId "+ userFilmId );
-		
 		DatabaseConnector databaseConnector=new DatabaseConnector();
         Connection  connection =null;
-        String sql = "Delete from film where film_id = ?";
+        String sql = "Delete from film where film_id IN ("+userFilmId+")";
         PreparedStatement statement = null;
         
         try {
@@ -31,9 +30,7 @@ public class DeleteMovie extends HttpServlet {
         	connection=databaseConnector.connectdb();
         	connection.setAutoCommit(false);
 			statement = connection.prepareStatement(sql);
-			
-				statement.setString(1, userFilmId);
-				
+	
 				int status = statement.executeUpdate();
 				System.out.println(statement);
 				
