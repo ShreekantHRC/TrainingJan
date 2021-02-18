@@ -30,16 +30,18 @@ public class UpdateSpcFilm extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("--------------Trace - UpdateSpcFilm.doPost()--------------");
         System.out.println(request.getContentType());
+        String userRating = request.getParameter("uRating");
+        String userRelYear = request.getParameter("uRelYear");
 		String userTitle = request.getParameter("uTitle");
 		String userDescription = request.getParameter("uDesc");
 		String userLanguage = request.getParameter("uLang");
 		String userSpecialFeature = request.getParameter("uSpec");
 		String userFilmId = request.getParameter("uFilmId");
-		System.out.println("Data recieved " + " film_id " + userFilmId  +" utitle " + userTitle + " userDescription "+ userDescription + " userLanguage " + userLanguage + " userSpecialFeature " + userSpecialFeature);
+		System.out.println("Data recieved " + " film_id " + userFilmId  + " userRating " + userRating + " userRelYear " + userRelYear +" utitle " + userTitle + " userDescription "+ userDescription + " userLanguage " + userLanguage + " userSpecialFeature " + userSpecialFeature);
 		
 		DatabaseConnector databaseConnector=new DatabaseConnector();
         Connection  connection =null;
-        String sql = "Update film set title = ?, description = ?, language_id = ?, special_features = ? where film_id = ?";
+        String sql = "Update film set title = ?, description = ?, language_id = ?, special_features = ?, rating = ?, release_year=? where film_id = ?";
         PreparedStatement statement = null;
         
         try {
@@ -52,7 +54,10 @@ public class UpdateSpcFilm extends HttpServlet {
 				statement.setString(2, userDescription);
 				statement.setString(3, userLanguage);
 				statement.setString(4, userSpecialFeature);
-				statement.setString(5, userFilmId);
+				statement.setString(5, userRating);
+				statement.setString(6, userRelYear);
+				statement.setString(7, userFilmId);
+				
 				
 				int status = statement.executeUpdate();
 				System.out.println(statement);

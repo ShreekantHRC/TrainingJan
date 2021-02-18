@@ -21,15 +21,17 @@ public class AddMovie extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("--------------Trace - AddMovie.doPost()--------------");
         System.out.println(request.getContentType());
+        String userRelYear = request.getParameter("uRelYear");
+        String userRating = request.getParameter("uRating");
 		String userTitle = request.getParameter("uTitle");
 		String userDescription = request.getParameter("uDesc");
 		String userLanguage = request.getParameter("uLang");
 		String userSpecialFeature = request.getParameter("uSpec");
-		System.out.println("Data recieved " + " utitle " + userTitle + " userDescription "+ userDescription + " userLanguage " + userLanguage + " userSpecialFeature " + userSpecialFeature);
+		System.out.println("Data recieved " + " uRating " + userRating + " uRelYear " + userRelYear +  " utitle " + userTitle + " userDescription "+ userDescription + " userLanguage " + userLanguage + " userSpecialFeature " + userSpecialFeature);
 		
 		DatabaseConnector databaseConnector=new DatabaseConnector();
         Connection  connection =null;
-        String sql = "INSERT into film (title,description,language_id,special_features) values (?,?,?,?)";
+        String sql = "INSERT into film (title,description,language_id,special_features,rating,release_year) values (?,?,?,?,?,?)";
         PreparedStatement statement = null;
         
         try {
@@ -42,6 +44,8 @@ public class AddMovie extends HttpServlet {
 				statement.setString(2, userDescription);
 				statement.setString(3, userLanguage);
 				statement.setString(4, userSpecialFeature);
+				statement.setString(5, userRating);
+				statement.setString(6, userRelYear);
 				
 				int status = statement.executeUpdate();
 				System.out.println(statement);

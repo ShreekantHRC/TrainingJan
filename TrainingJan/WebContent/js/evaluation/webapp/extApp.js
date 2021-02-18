@@ -53,7 +53,6 @@ Ext.onReady(function() {
 			type:'ajax',
 			url:'http://localhost:8080/TrainingJan/dataFetch',
 			enablePaging:true, 
-//		    method: 'GET',          
 			reader:{
 				type:'json',
 				rootProperty:'movies',
@@ -287,14 +286,17 @@ Ext.onReady(function() {
 				        						choiceAddLang=5;
 				        					}
 				        					console.log("language in add ", addLang);
-				        					addSpecialFeatures=addSpecialFeatures.join(",")
+				        					addSpecialFeatures=addSpecialFeatures.join(",");
 				        					console.log(addSpecialFeatures);
+				        					console.log("chk");
 				        					Ext.Ajax.request({
 				        					    url: 'http://localhost:8080/TrainingJan/addMovie',
 				        					    method: 'POST',          
 				        					    params: {
 				        					    	uTitle:addTitle,
+				        					    	uRelYear:addRelYear,
 				        					    	uDesc:addDesc,
+				        					    	uRating:addRating,
 				        					    	uLang:choiceAddLang,
 				        					    	uSpec:addSpecialFeatures,
 				        					    },
@@ -450,23 +452,26 @@ Ext.onReady(function() {
 				        					var userRating = Ext.getCmp('ratingCombo').getValue();
 				        					var userLang = Ext.getCmp('langCombo').getValue();
 				        					var choiceLang;
-				        					if(userLang=='English'){
+				        					if(userLang=='English' || userLang=='1'){
 				        						choiceLang=1;
-				        					}else if(userLang=='Italian'){
+				        					}else if(userLang=='Italian' || userLang=='2'){
 				        						choiceLang=2;
-				        					}else if(userLang=='Japanese'){
+				        					}else if(userLang=='Japanese' || userLang=='3'){
 				        						choiceLang=3;
-				        					}else if(userLang=='Mandarin'){
+				        					}else if(userLang=='Mandarin' || userLang=='4'){
 				        						choiceLang=4;
-				        					}else if(userLang=='German'){
+				        					}else if(userLang=='German' || userLang=='5'){
 				        						choiceLang=5;
 				        					}	
 				        					var userfilmId= Ext.getCmp('testGrid').getSelectionModel().getSelection()[0].data.filmId;
 				        					
+				        					console.log(userLang + " " + choiceLang );
 				        					Ext.Ajax.request({
 				        					    url: 'http://localhost:8080/TrainingJan/updateMovie',
 				        					    method: 'POST',          
 				        					    params: {
+				        					    	uRelYear:userRelYear,
+				        					    	uRating:userRating,
 				        					    	uTitle:userTitle,
 				        					    	uDesc:userDesc,
 				        					    	uLang:choiceLang,
@@ -503,7 +508,7 @@ Ext.onReady(function() {
 	var grid = Ext.create('Ext.grid.Panel', {
 		store: Ext.data.StoreManager.lookup('employeeStore'),
 		plugins: 'gridfilters',
-		//bodyPadding: 10,
+		//padding: 10,
 		title:'Movie Grid',
 		
 		toggleOnClick:true,
@@ -550,7 +555,7 @@ Ext.onReady(function() {
 							xtype:'pagingtoolbar',
 							store: staticStore,
 							dock:'top',
-							inputItemWidth:'3em',
+							inputItemWidth:'4em',
 							displayMsg:'Displaying {0} - {1} of {2}',
 							emptyMsg:'No records to display',
 							displayInfo: 'true',
@@ -564,9 +569,18 @@ Ext.onReady(function() {
 												width:12.5
 											},{
 												xtype:'textfield',
+												enableKeyEvents:true,
 												label:'Title Search ',
 												emptyText: 'Search..',
+												id:'dynamicSearch',
 												width: 150,
+												listeners: {
+													keyup: function(){
+														var dynamicSearch = Ext.getCmp('dynamicSearch').getValue();
+														staticStore.getProxy().setExtraParam('yehBhi',dynamicSearch);
+														staticStore.load();
+													}
+												}
 											},{
 												xtype:'tbspacer',
 												width:12.5
@@ -588,7 +602,8 @@ Ext.onReady(function() {
 												width:12.5
 											},deleteButton
 									]
-					}],		
+					}],
+			
 		});
 
 	var filterPanel = Ext.create('Ext.panel.Panel', {
@@ -610,6 +625,7 @@ Ext.onReady(function() {
         						fieldLabel: 'Movie Name ',
         						name: 'fname',
         						allowBlank: false,
+        						id:'advSearchMovieName',
         						emptyText:'Enter the name of the movie',
         						fieldStyle: 'text-align: center;',
         						//padding: '50 0 50 200',
@@ -623,7 +639,7 @@ Ext.onReady(function() {
         						xtype: 'datefield',
         						fieldLabel: 'Release Year',
         						//padding: '150 0 0 -400',
-        						id: 'rYear',
+        						id: 'advSearchReleaseYear',
         						emptyText:'When was it released ?',
         						width:400,
         						pack:'center',
@@ -644,11 +660,11 @@ Ext.onReady(function() {
     					layout:'vbox',
     					items:[
     							{
-    								fieldLabel: 'Director Name ',
+    								fieldLabel: 'Genre ',
     								//padding: '50 200 10 250',
     								xtype: 'textfield',
-    								emptyText:'Who is the director ?',
-    								id: 'dName',
+    								emptyText:'What genre ?',
+    								id: 'advSearchDirectorName',
     								width:400,
     								fieldStyle: 'text-align: center;',
     								allowBlank: false
@@ -663,7 +679,7 @@ Ext.onReady(function() {
     								emptyText:'And the language ?',
     								displayField: 'name',
     								valueField: 'abbr',
-    								id: 'myCombobox',
+    								id: 'advSearchLanguageName',
     								forceSelection:true,
     								 editable: true, 
     								queryMode:'local',
@@ -685,7 +701,7 @@ Ext.onReady(function() {
         			pack  : 'center',
         			align : 'middle'
         		},
-        		margin : '15 0 15 0',
+        		margin : '20 0 20 0',
         		title: 'Buttons', 
         		items: [{
             					xtype:'button',
@@ -696,7 +712,21 @@ Ext.onReady(function() {
             					listeners: {
             						click: function() {
             							console.log(Ext.getCmp('testGrid').getSelectionModel().select(0));
-            							Ext.MessageBox.alert('Searching in Grid', ' Coming Soon !');
+            							var advSearchMovieName = Ext.getCmp('advSearchMovieName').getValue();
+            							var advSearchReleaseYear = Ext.getCmp('advSearchReleaseYear').getValue();
+            							var advSearchDirectorName = Ext.getCmp('advSearchDirectorName').getValue();
+            							var advSearchLanguageName = Ext.getCmp('advSearchLanguageName').getValue();
+            							
+            							//advance search on or not
+            							staticStore.getProxy().setExtraParam('advanceSearch','true');
+            							
+            							//send values
+            							staticStore.getProxy().setExtraParam('advSearchMovieName',advSearchMovieName);
+            							staticStore.getProxy().setExtraParam('advSearchLanguageName',advSearchLanguageName);
+            							staticStore.getProxy().setExtraParam('advSearchDirectorName',advSearchDirectorName);
+            							staticStore.getProxy().setExtraParam('advSearchReleaseYear',advSearchReleaseYear);
+            							
+										staticStore.load();	
             						}
             					}
             				},{
@@ -722,7 +752,7 @@ Ext.onReady(function() {
             											Ext.getCmp('dName').reset();
             											Ext.getCmp('myCombobox').setValue(null);
             											Ext.getCmp('rYear').reset();
-            											
+            											store.load();
             										}else{
             											console.log("Pressed No in reset");
             											console.log("Values in reset");
@@ -750,6 +780,7 @@ Ext.onReady(function() {
 					},
 					title: 'Bottom', 
 					items: [filterPanel,newPanel,grid],
+					
 					renderTo: Ext.getBody(),	
 				});	
 	});
