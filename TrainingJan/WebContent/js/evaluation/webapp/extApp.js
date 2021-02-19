@@ -1,7 +1,7 @@
 Ext.onReady(function() {
 	var windowWidth = Ext.getBody().getViewSize().width;
-	var windowHeight25 = (Ext.getBody().getViewSize().height)/5;
-	var windowHeight75 = (windowHeight25)*2.45;
+	var windowHeight25 = (Ext.getBody().getViewSize().height)/3;
+	var windowHeight75 = (windowHeight25)*1.65;
 	var numberOfRecords= 10;
 	
 	Ext.override(Ext.Window, {
@@ -533,19 +533,25 @@ Ext.onReady(function() {
 				type:'checkboxmodel'
 		},
 		listeners:{
-			rowclick: function() {
+			selectionchange:function(){
 				var select = Ext.getCmp('testGrid').getView().getSelectionModel().getSelection()[0];
 				console.log(Ext.getCmp('testGrid').getView().getSelectionModel().getSelection().length);
-				if(Ext.getCmp('testGrid').getView().getSelectionModel().getSelection().length == 1){
+				if(Ext.getCmp('testGrid').getView().getSelectionModel().hasSelection()==true){
 					Ext.getCmp('deleteButton').enable();
-					Ext.getCmp('editButton').enable();
-					Ext.getCmp('newTitle').setValue(Ext.getCmp('testGrid').getView().getSelectionModel().getSelection()[0].data.title);
-					Ext.getCmp('newRelYear').setValue(Ext.getCmp('testGrid').getView().getSelectionModel().getSelection()[0].data.releaseYear);
-					Ext.getCmp('newDesc').setValue(Ext.getCmp('testGrid').getView().getSelectionModel().getSelection()[0].data.description);
-					Ext.getCmp('featureCombo').setValue(Ext.getCmp('testGrid').getView().getSelectionModel().getSelection()[0].data.specialFeature);
-					Ext.getCmp('ratingCombo').setValue(Ext.getCmp('testGrid').getView().getSelectionModel().getSelection()[0].data.rating);
-					Ext.getCmp('langCombo').setValue(Ext.getCmp('testGrid').getView().getSelectionModel().getSelection()[0].data.language);
-				}else{
+					if(Ext.getCmp('testGrid').getView().getSelectionModel().getSelection().length == 1){
+						Ext.getCmp('editButton').enable();
+						Ext.getCmp('newTitle').setValue(Ext.getCmp('testGrid').getView().getSelectionModel().getSelection()[0].data.title);
+						Ext.getCmp('newRelYear').setValue(Ext.getCmp('testGrid').getView().getSelectionModel().getSelection()[0].data.releaseYear);
+						Ext.getCmp('newDesc').setValue(Ext.getCmp('testGrid').getView().getSelectionModel().getSelection()[0].data.description);
+						Ext.getCmp('featureCombo').setValue(Ext.getCmp('testGrid').getView().getSelectionModel().getSelection()[0].data.specialFeature);
+						Ext.getCmp('ratingCombo').setValue(Ext.getCmp('testGrid').getView().getSelectionModel().getSelection()[0].data.rating);
+						Ext.getCmp('langCombo').setValue(Ext.getCmp('testGrid').getView().getSelectionModel().getSelection()[0].data.language);
+					}else{
+						Ext.getCmp('editButton').disable();
+					}
+				}
+				else{
+					Ext.getCmp('deleteButton').disable();
 					Ext.getCmp('editButton').disable();
 				}
 			}
@@ -570,16 +576,22 @@ Ext.onReady(function() {
 											},{
 												xtype:'textfield',
 												enableKeyEvents:true,
-												label:'Title Search ',
-												emptyText: 'Search..',
+												fieldLabel:'Film Id',
+												emptyText: 'Search...',
+												labelStyle:'width: 4em',
 												id:'dynamicSearch',
-												width: 150,
+											    fieldStyle: 'text-align: center;',
+												width: 200,
 												listeners: {
 													keyup: function(){
 														var dynamicSearch = Ext.getCmp('dynamicSearch').getValue();
-														staticStore.getProxy().setExtraParam('yehBhi',dynamicSearch);
+														//if(dynamicSearch){
+														console.log("reload in search");
+														staticStore.getProxy().setExtraParam('dynaSearch',dynamicSearch);
+														staticStore.currentPage=1;
 														staticStore.load();
-													}
+														//}
+													},
 												}
 											},{
 												xtype:'tbspacer',
@@ -609,7 +621,7 @@ Ext.onReady(function() {
 	var filterPanel = Ext.create('Ext.panel.Panel', {
 	    title: 'Movie Advance Search',
 	    width: windowWidth,
-	    height:285,
+	    height:windowHeight25,
 	    layout: {
 	    	type: 'hbox',
 	    	align: 'middle',

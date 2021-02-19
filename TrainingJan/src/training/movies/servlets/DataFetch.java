@@ -56,14 +56,14 @@ public class DataFetch extends HttpServlet {
 			limit=300;
 		}
 		
-		String stringData=request.getParameter("yehBhi");
-		String advSearchOrNot=request.getParameter("advanceSearch");
-		
-		String advSearchReleaseYear=request.getParameter("advSearchReleaseYear");
-		String advSearchMovieName=request.getParameter("advSearchMovieName");
-		String advSearchDirectorName=request.getParameter("advSearchDirectorName");
-		String advSearchLanguageName=request.getParameter("advSearchLanguageName");
-		
+		String stringData=request.getParameter("dynaSearch");
+//		String advSearchOrNot=request.getParameter("advanceSearch");
+//		
+//		String advSearchReleaseYear=request.getParameter("advSearchReleaseYear");
+//		String advSearchMovieName=request.getParameter("advSearchMovieName");
+//		String advSearchDirectorName=request.getParameter("advSearchDirectorName");
+//		String advSearchLanguageName=request.getParameter("advSearchLanguageName");
+//		
 		System.out.println("--------------Trace - DataFetch.doGet("+ page + ")--------------");
 		
 		System.out.println("Extra param value " + stringData);
@@ -74,23 +74,23 @@ public class DataFetch extends HttpServlet {
         Connection  connection =null;
         PrintWriter out = response.getWriter();
         String sql;
-        if(stringData==null || stringData=="" && advSearchOrNot=="" || advSearchOrNot==null) {
+        if(stringData==null || stringData=="" /*&& advSearchOrNot=="" || advSearchOrNot==null*/) {
         sql= "SELECT film.film_id as filmId, title, cat.name AS genre, description, release_year AS releaseYear, lang.name AS lang, rating, special_features AS specialFeatures FROM film\r\n" + 
         		"LEFT JOIN (SELECT `name`,language_id FROM `language`) AS lang ON film.language_id = lang.language_id \r\n" + 
         		"LEFT JOIN (SELECT film_id, category_id FROM film_category) AS fc ON film.film_id = fc.film_id\r\n" + 
         		"LEFT JOIN (SELECT category_id, `name` FROM category) AS cat ON fc.category_id=cat.category_id \r\n" + "Order by film.film_id " 
         		+ "limit "+start+", "+limit;
-        }else if(advSearchOrNot=="true" && stringData==null || stringData=="") {
+        }/*else if(advSearchOrNot=="true" && stringData==null || stringData=="") {
         	sql = "SELECT film.film_id as filmId, title, cat.name AS genre, description, release_year AS releaseYear, lang.name AS lang, rating, special_features AS specialFeatures FROM film\r\n" + 
             		"LEFT JOIN (SELECT `name`,language_id FROM `language`) AS lang ON film.language_id = lang.language_id \r\n" + 
             		"LEFT JOIN (SELECT film_id, category_id FROM film_category) AS fc ON film.film_id = fc.film_id\r\n" + 
             		"LEFT JOIN (SELECT category_id, `name` FROM category) AS cat ON fc.category_id=cat.category_id \r\n" + "where lang.name Like '%"+advSearchLanguageName+"%' AND Like '%"+advSearchReleaseYear+"%' AND Like '%"+advSearchMovieName+"%' Like '%"+advSearchDirectorName+"%' Order by film.film_id ";
-        }
+        }*/
         else {
         	sql= "SELECT film.film_id as filmId, title, cat.name AS genre, description, release_year AS releaseYear, lang.name AS lang, rating, special_features AS specialFeatures FROM film\r\n" + 
             		"LEFT JOIN (SELECT `name`,language_id FROM `language`) AS lang ON film.language_id = lang.language_id \r\n" + 
             		"LEFT JOIN (SELECT film_id, category_id FROM film_category) AS fc ON film.film_id = fc.film_id\r\n" + 
-            		"LEFT JOIN (SELECT category_id, `name` FROM category) AS cat ON fc.category_id=cat.category_id \r\n" + "where film.film_id Like '%"+stringData+"%' Order by film.film_id " ;
+            		"LEFT JOIN (SELECT category_id, `name` FROM category) AS cat ON fc.category_id=cat.category_id \r\n" + "where film.film_id Like '%"+stringData+"%' Order by film.film_id "+ "limit "+start+", "+limit ;
         }
         
         ResultSet rs = null;
@@ -133,7 +133,11 @@ public class DataFetch extends HttpServlet {
 		catch(Exception e) {
 			e.printStackTrace();
 		}
+        if(stringData==null || stringData=="") {
         sql= "Select count(1) from film";
+        }else {
+        	sql= "Select count(1) from film where film_id Like '%"+stringData+"%'";
+		} 
         try {
 			connection=databaseConnector.connectdb();
 			statement = connection.prepareStatement(sql);
