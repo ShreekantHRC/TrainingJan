@@ -145,7 +145,7 @@ Ext.onReady(function() {
 	
 	var addMovie = new Ext.Window(
 			{
-		    	title:'Edit Film Details',
+		    	title:'Add A New Movie',
 		        layout: {
 		        	type:'vbox',
 		        	align:'center',
@@ -583,15 +583,19 @@ Ext.onReady(function() {
 											    fieldStyle: 'text-align: center;',
 												width: 200,
 												listeners: {
-													keyup: function(){
+													change: function(){
 														var dynamicSearch = Ext.getCmp('dynamicSearch').getValue();
 														//if(dynamicSearch){
-														console.log("reload in search");
+														console.log("reload  iin search" + " value - "+ Ext.getCmp('dynamicSearch').getValue());
 														staticStore.getProxy().setExtraParam('dynaSearch',dynamicSearch);
 														staticStore.currentPage=1;
 														staticStore.load();
 														//}
 													},
+//													keyup:function(){
+//														console.log("check check" + " value - "+ Ext.getCmp('dynamicSearch').getValue());
+//													}
+													
 												}
 											},{
 												xtype:'tbspacer',
@@ -687,13 +691,13 @@ Ext.onReady(function() {
     								fieldLabel: 'Language',
     								//	padding: '150 200 0 -600',
     								xtype: 'combobox',
-    								store:track,
+    								store:languages,
     								emptyText:'And the language ?',
-    								displayField: 'name',
-    								valueField: 'abbr',
+    								displayField: 'text',
+    								valueField: 'value',
     								id: 'advSearchLanguageName',
     								forceSelection:true,
-    								 editable: true, 
+    								editable: true, 
     								queryMode:'local',
     								fieldStyle: 'text-align: center;',
     								forceSelection: false,
@@ -724,21 +728,27 @@ Ext.onReady(function() {
             					listeners: {
             						click: function() {
             							console.log(Ext.getCmp('testGrid').getSelectionModel().select(0));
-            							var advSearchMovieName = Ext.getCmp('advSearchMovieName').getValue();
-            							var advSearchReleaseYear = Ext.getCmp('advSearchReleaseYear').getValue();
-            							var advSearchDirectorName = Ext.getCmp('advSearchDirectorName').getValue();
-            							var advSearchLanguageName = Ext.getCmp('advSearchLanguageName').getValue();
+            							var advSearchMName = Ext.getCmp('advSearchMovieName').getValue();
+            							var advSearchRYear = Ext.getCmp('advSearchReleaseYear').getValue();
+            							var advSearchDName = Ext.getCmp('advSearchDirectorName').getValue();
+            							var advSearchLName = Ext.getCmp('advSearchLanguageName').getValue();
+            							console.log(advSearchRYear+advSearchMName+advSearchDName+advSearchLName);
             							
-            							//advance search on or not
-            							staticStore.getProxy().setExtraParam('advanceSearch','true');
-            							
-            							//send values
-            							staticStore.getProxy().setExtraParam('advSearchMovieName',advSearchMovieName);
-            							staticStore.getProxy().setExtraParam('advSearchLanguageName',advSearchLanguageName);
-            							staticStore.getProxy().setExtraParam('advSearchDirectorName',advSearchDirectorName);
-            							staticStore.getProxy().setExtraParam('advSearchReleaseYear',advSearchReleaseYear);
-            							
-										staticStore.load();	
+			        					staticStore.getProxy().url = 'http://localhost:8080/TrainingJan/advancedSearch',          
+//			        					staticStore.getProxy().setParamsAsJson({
+//			        					    	advSearchReleaseYear:advSearchRYear,
+//			        					    	advSearchMovieName:advSearchMName,
+//			        					    	advSearchDirectorName:advSearchDName,
+//			        					    	advSearchLanguageName:advSearchLName,
+//			        					    })	;
+										staticStore.load({
+											params:{
+												advSearchReleaseYear:advSearchRYear,
+			        					    	advSearchMovieName:advSearchMName,
+			        					    	advSearchDirectorName:advSearchDName,
+			        					    	advSearchLanguageName:advSearchLName,
+											}
+										});	
             						}
             					}
             				},{
@@ -760,11 +770,12 @@ Ext.onReady(function() {
             									width:150,
             									fn:function(btn){
             										if(btn=='yes'){
-            											filterPanel.down('textfield[name=fname]').reset();
-            											Ext.getCmp('dName').reset();
-            											Ext.getCmp('myCombobox').setValue(null);
-            											Ext.getCmp('rYear').reset();
-            											store.load();
+            											Ext.getCmp('advSearchMovieName').reset();
+            											Ext.getCmp('advSearchDirectorName').reset();
+            											Ext.getCmp('advSearchLanguageName').setValue(null);
+            											Ext.getCmp('advSearchReleaseYear').reset();
+            											staticStore.getProxy().url = 'http://localhost:8080/TrainingJan/dataFetch';
+            											staticStore.load();
             										}else{
             											console.log("Pressed No in reset");
             											console.log("Values in reset");

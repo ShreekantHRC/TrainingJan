@@ -21,21 +21,75 @@ import com.google.gson.JsonObject;
 import training.movies.connection.DatabaseConnector;
 import training.movies.connection.MoviesPOJO;
 
-public class DataFetch extends HttpServlet {
+class SearchParams{
+	public SearchParams() {
+		setGenre("");
+		setLanguage("");
+		setMovieName("");
+		setReleaseYear("");
+	}
+	
+	private String movieName;
+	private String releaseYear;
+	private String genre;
+	private String language;
+	
+	
+	public String getMovieName() {
+		return movieName;
+	}
+	public void setMovieName(String movieName) {
+		if (movieName != null) {
+			this.movieName = movieName;
+		}
+		else {
+			this.movieName = "";
+		}
+	}
+	public String getReleaseYear() {
+		return releaseYear;
+	}
+	public void setReleaseYear(String releaseYear) {
+		if (releaseYear != null) {
+			this.releaseYear = releaseYear;
+		}
+		else {
+			this.releaseYear = "";
+		}
+	}
+	public String getGenre() {
+		return genre;
+	}
+	public void setGenre(String genre) {
+		if (genre != null) {
+			this.genre = genre;
+		}else {
+			this.genre = "";
+		}
+	}
+	public String getLanguage() {
+		return language;
+	}
+	public void setLanguage(String language) {
+		if (language != null) {
+			this.language = language;
+		}
+		else {
+			this.language = "";
+		}
+	}
+	@Override
+	public String toString() {
+		return "SearchParams [movieName=" + movieName + ", releaseYear=" + releaseYear + ", genre=" + genre
+				+ ", language=" + language + "]";
+	}
+
+}
+
+public class AdvancedSearch extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-    /**
-     * Default constructor. 
-     */
-    public DataFetch() {
-        // TODO Auto-generated constructor stub
-    }
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		int page, start, limit;
 		if (request.getParameter("page") != null) {
 			page=Integer.parseInt(request.getParameter("page"));	
@@ -54,41 +108,52 @@ public class DataFetch extends HttpServlet {
 			limit=300;
 		}
 		
-		String stringData=request.getParameter("dynaSearch");
-		
-		System.out.println("--------------Trace - DataFetch.doGet("+ page + ")--------------");
-		
-		System.out.println("Extra param value " + stringData);
+		System.out.println("-----------------------------Track - AdvancedSearch.doGet()---------------------------");
 		
 		System.out.println("start "+ start +" limit "+ limit+ " page "+ page);
+		System.out.println(" advSearchReleaseYear " + request.getParameter("advSearchReleaseYear")+
+				" advSearchMovieName " + request.getParameter("advSearchMovieName")+
+				" advSearchDirectorName " + request.getParameter("advSearchDirectorName")+
+				" advSearchLanguageName " + request.getParameter("advSearchLanguageName"));
+		
+		
+		SearchParams checkObj=new SearchParams();
+		String yearRetrieve=request.getParameter("advSearchReleaseYear");
+		yearRetrieve=yearRetrieve.substring(0, 4);
+		checkObj.setReleaseYear(yearRetrieve);
+		checkObj.setMovieName(request.getParameter("advSearchMovieName"));
+		checkObj.setGenre(request.getParameter("advSearchDirectorName"));
+		checkObj.setLanguage(request.getParameter("advSearchLanguageName"));
+		
+		checkObj.toString();
 		
 		DatabaseConnector databaseConnector=new DatabaseConnector();
         Connection  connection =null;
         PrintWriter out = response.getWriter();
         String sql;
-        if(stringData==null || stringData=="") {
-        sql= "SELECT film.film_id as filmId, title, cat.name AS genre, description, release_year AS releaseYear, lang.name AS lang, rating, special_features AS specialFeatures FROM film\r\n" + 
+        
+    	sql = "SELECT film.film_id as filmId, title, cat.name AS genre, description, release_year AS releaseYear, lang.name AS lang, rating, special_features AS specialFeatures FROM film\r\n" + 
         		"LEFT JOIN (SELECT `name`,language_id FROM `language`) AS lang ON film.language_id = lang.language_id \r\n" + 
         		"LEFT JOIN (SELECT film_id, category_id FROM film_category) AS fc ON film.film_id = fc.film_id\r\n" + 
-        		"LEFT JOIN (SELECT category_id, `name` FROM category) AS cat ON fc.category_id=cat.category_id \r\n" + "Order by film.film_id " 
-        		+ "limit "+start+", "+limit;
-        }
-        else {
-        	sql= "SELECT film.film_id as filmId, title, cat.name AS genre, description, release_year AS releaseYear, lang.name AS lang, rating, special_features AS specialFeatures FROM film\r\n" + 
-            		"LEFT JOIN (SELECT `name`,language_id FROM `language`) AS lang ON film.language_id = lang.language_id \r\n" + 
-            		"LEFT JOIN (SELECT film_id, category_id FROM film_category) AS fc ON film.film_id = fc.film_id\r\n" + 
-            		"LEFT JOIN (SELECT category_id, `name` FROM category) AS cat ON fc.category_id=cat.category_id \r\n" + "where film.film_id Like '%"+stringData+"%' Order by film.film_id "+ "limit "+start+", "+limit ;
-        }
-        
+        		"LEFT JOIN (SELECT category_id, `name` FROM category) AS cat ON fc.category_id=cat.category_id \r\n" + "where lang.language_id Like ? AND cat.name Like ? AND title Like ? AND release_year Like ? Order by film.film_id "+ "limit "+start+", "+limit ;
+    	
         ResultSet rs = null;
         PreparedStatement statement = null;
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         JsonObject jsonObject = new JsonObject();
         JsonArray jarray= new JsonArray();
+        
         try {
 
         	connection=databaseConnector.connectdb();
 			statement = connection.prepareStatement(sql);
+			
+			statement.setString(1, "%"+checkObj.getLanguage()+"%");
+			statement.setString(2, "%"+checkObj.getGenre()+"%");
+			statement.setString(3, "%"+checkObj.getMovieName()+"%");
+			statement.setString(4, "%"+checkObj.getReleaseYear()+"%");
+			
+			System.out.println(statement);
 			
 			rs = statement.executeQuery();
 			
@@ -123,15 +188,21 @@ public class DataFetch extends HttpServlet {
         
         //total property check
         
-        if(stringData==null || stringData=="") {
-        sql= "Select count(1) from film";
-        }else {
-        	sql= "Select count(1) from film where film_id Like '%"+stringData+"%'";
-		}
+        sql= "SELECT count(1) FROM film\r\n" + 
+        		"LEFT JOIN (SELECT `name`,language_id FROM `language`) AS lang ON film.language_id = lang.language_id \r\n" + 
+        		"LEFT JOIN (SELECT film_id, category_id FROM film_category) AS fc ON film.film_id = fc.film_id\r\n" + 
+        		"LEFT JOIN (SELECT category_id, `name` FROM category) AS cat ON fc.category_id=cat.category_id \r\n" + "where lang.language_id Like ? AND cat.name Like ? AND title Like ? AND release_year Like ? Order by film.film_id ";
         
         try {
 			connection=databaseConnector.connectdb();
 			statement = connection.prepareStatement(sql);
+			
+
+			statement.setString(1, "%"+checkObj.getLanguage()+"%");
+			statement.setString(2, "%"+checkObj.getGenre()+"%");
+			statement.setString(3, "%"+checkObj.getMovieName()+"%");
+			statement.setString(4, "%"+checkObj.getReleaseYear()+"%");
+			
 			rs = statement.executeQuery();
 			int totalCount=0;
 			while(rs.next()) {

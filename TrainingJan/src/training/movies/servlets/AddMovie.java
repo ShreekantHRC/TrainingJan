@@ -40,12 +40,36 @@ public class AddMovie extends HttpServlet {
         	connection.setAutoCommit(false);
 			statement = connection.prepareStatement(sql);
 			
-				statement.setString(1, userTitle);
-				statement.setString(2, userDescription);
-				statement.setString(3, userLanguage);
-				statement.setString(4, userSpecialFeature);
-				statement.setString(5, userRating);
-				statement.setString(6, userRelYear);
+				if (userTitle == null || userTitle=="" ) {
+					statement.setNull(1, java.sql.Types.NULL);
+				}else {
+					statement.setString(1, userTitle);	
+				}
+				if (userDescription==null || userDescription=="") {
+					statement.setNull(2, java.sql.Types.NULL);
+				}else {
+					statement.setString(2, userDescription);
+				}
+				if (userLanguage==null || userLanguage=="") {
+					statement.setNull(3, java.sql.Types.NULL);
+				}else {
+					statement.setString(3, userLanguage);
+				}
+				if (userSpecialFeature == null || userSpecialFeature=="") {
+					statement.setNull(4, java.sql.Types.NULL);
+				}else {
+					statement.setString(4, userSpecialFeature);
+				}
+				if (userRating == null || userRating == "") {
+					statement.setNull(5, java.sql.Types.NULL);
+				}else {
+					statement.setString(5, userRating);
+				}
+				if (userRelYear == null || userRelYear == "") {
+					statement.setNull(6, java.sql.Types.NULL);
+				}else {
+					statement.setString(6, userRelYear);
+				}
 				
 				int status = statement.executeUpdate();
 				System.out.println(statement);
@@ -68,7 +92,7 @@ public class AddMovie extends HttpServlet {
 				}
 			}
 			if(statement != null) {
-				try {
+				try { 
 					statement.close();
 				} catch (SQLException e) {
 					e.printStackTrace();
